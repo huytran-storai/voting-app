@@ -1,0 +1,7 @@
+{
+  "name": "rxjs-demo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
