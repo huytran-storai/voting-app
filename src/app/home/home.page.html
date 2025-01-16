@@ -1,20 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Voting App
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-searchbar placeholder="search" (ionInput)="onSearchChange($event)"></ion-searchbar>
+  <ion-skeleton-text *ngIf="loading" [animated]="true" style="width: 100%; height: 30px; margin: 10px;"></ion-skeleton-text>
+  <ion-list [inset]="true">
+    <ion-item *ngFor="let pet of data">
+      <ion-label>{{pet.name}}</ion-label>
+      <!-- <ion-chip color="warning">Top 1</ion-chip> -->
+      <ion-chip color="success">{{pet.votes}}</ion-chip>
+      <ion-spinner name="circular" *ngIf="loadingVote"></ion-spinner>
+      <ion-button shape="round" *ngIf="!loadingVote" [color]="pet.votes > 0 ? 'danger' : 'medium'" (click)="onVote(pet.id)"><ion-icon slot="icon-only" name="heart"></ion-icon></ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>
