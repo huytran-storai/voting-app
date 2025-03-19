@@ -1,3 +1,10 @@
 ion-spinner {
     --color: #54dc98;
 }
+.btn-add {
+    display: flex;
+    justify-content: center;
+    ion-button {
+        padding: 10px;
+    }
+}

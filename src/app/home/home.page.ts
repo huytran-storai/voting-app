@@ -14,6 +14,9 @@ export class HomePage implements OnInit {
   data: Pet[] = [];
   loading = false;
   loadingVote = false;
+  isModalOpen = false;
+  walletName = '';
+  walletAmount: number | null = null;
   private destroy$ = new Subject<void>();
   constructor(public fakeApi: FakeApiService, public searchS : SearchItemService, public voteS : VotingService) { }
 
@@ -55,8 +58,15 @@ export class HomePage implements OnInit {
     this.voteS.vote(id);
     this.voteS.destroy();
   }
+  openModal() {
+    this.isModalOpen = true;
+  }
 
-  getVoteHaveTheMost() {
-    
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  submitWallet() {
+    this.closeModal();
   }
 }
