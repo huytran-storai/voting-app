@@ -5,9 +5,9 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-  <!-- <ion-searchbar placeholder="search" (ionInput)="onSearchChange($event)"></ion-searchbar>
+<!-- <ion-searchbar placeholder="search" (ionInput)="onSearchChange($event)"></ion-searchbar>
   <ion-skeleton-text *ngIf="loading" [animated]="true" style="width: 100%; height: 30px; margin: 10px;"></ion-skeleton-text> -->
-  <!-- <ion-list [inset]="true">
+<!-- <ion-list [inset]="true">
     <ion-item *ngFor="let pet of data">
       <ion-label>{{pet.name}}</ion-label>
       <ion-chip color="success">{{pet.votes}}</ion-chip>
@@ -15,56 +15,70 @@
       <ion-button shape="round" *ngIf="!loadingVote" [color]="pet.votes > 0 ? 'danger' : 'medium'" (click)="onVote(pet.id)"><ion-icon slot="icon-only" name="heart"></ion-icon></ion-button>
     </ion-item>
   </ion-list> -->
-  <ion-content [fullscreen]="true">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Tổng: 3.000.000</ion-card-title>
-        <ion-card-subtitle>
-        </ion-card-subtitle>
-      </ion-card-header>
-    
-      <ion-card-content>
-        <ion-list [formGroup]="walletForm">
-          <ion-item>
-            <ion-input
-              labelPlacement="floating"
-              formControlName="name"
-              [ngClass]="{'invalid': walletForm.controls['name'].invalid && walletForm.controls['name'].touched}"
-            >
-              <div slot="label">Tên ví <ion-text color="danger">(*)</ion-text></div>
-            </ion-input>
-          </ion-item>
-        
-          <ion-item>
-            <ion-input
-              labelPlacement="floating"
-              formControlName="balance"
-              type="number"
-              [ngClass]="{'invalid': walletForm.controls['balance'].invalid && walletForm.controls['balance'].touched}"
-            >
-              <div slot="label">Số dư <ion-text color="danger">(*)</ion-text></div>
-            </ion-input>
-          </ion-item>
-        
-          <ion-row class="btn-add">
-            <ion-button
-              size="medium"
-              color="success"
-              (click)="addWallet(1)"
-              [disabled]="walletForm.invalid"
-            >
-              <ion-icon name="add-circle-outline"></ion-icon> Thêm Ví
-            </ion-button>
-          </ion-row>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-    <ion-list>
-      <ion-item>
-        <ion-label (click)="goDetail()">Ví 1 (3.000.000) </ion-label>
-        <ion-button (click)="deleteWallet(1)" color="danger">X</ion-button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Tổng: 3.000.000</ion-card-title>
+      <ion-card-subtitle>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list [formGroup]="walletForm">
+        <ion-item>
+          <ion-input labelPlacement="floating" formControlName="name"
+            [ngClass]="{'invalid': walletForm.controls['name'].invalid && walletForm.controls['name'].touched}">
+            <div slot="label">Tên ví <ion-text color="danger">(*)</ion-text></div>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input labelPlacement="floating" formControlName="balance" type="number"
+            [ngClass]="{'invalid': walletForm.controls['balance'].invalid && walletForm.controls['balance'].touched}">
+            <div slot="label">Số dư <ion-text color="danger">(*)</ion-text></div>
+          </ion-input>
+        </ion-item>
+
+        <ion-row class="btn-add">
+          <ion-button size="medium" color="success" (click)="addWallet(1)" [disabled]="walletForm.invalid">
+            <ion-icon name="add-circle-outline"></ion-icon> Thêm Ví
+          </ion-button>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Danh sách các ví</ion-card-subtitle>
+    </ion-card-header>
   
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label (click)="goDetail()">Ví 1 (3.000.000) </ion-label>
+          <ion-button (click)="deleteWallet(1)" color="danger">X</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
   
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Tổng số dư sau các tháng</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Tháng 3: 5.000.000</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tháng 4: 2.500.000</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tháng 5: ước tính sau khi kết thúc tháng</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
