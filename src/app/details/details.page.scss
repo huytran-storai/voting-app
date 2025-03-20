@@ -1,0 +1,52 @@
+ion-item {
+    --padding-start: 0;
+}
+
+ion-card-header.ios {
+    display: flex;
+    flex-flow: column-reverse;
+    border-bottom: 5px solid;
+}
+
+ion-card-content {
+    overflow: auto;
+}
+
+.icon-transition {
+    height: 30px;
+    width: 30px;
+}
+
+.income {
+    color: green;
+}
+
+.uncome {
+    color: red;
+}
+
+.container {
+    overflow: scroll;
+    height: 350px;
+}
+
+.container-item {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-bottom: 1px solid;
+    .time {
+        padding-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+    }
+
+    .txt {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+}
