@@ -7,6 +7,7 @@ import { VotingService } from '../services/voting.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
   selector: 'app-home',
@@ -23,16 +24,20 @@ export class HomePage implements OnInit {
   walletAmount: number | null = null;
   walletForm: FormGroup;
   private destroy$ = new Subject<void>();
+  dataWallet: any[] = [];
+  getWallets: any;
+  totals: any = 0;
 
   constructor(public fakeApi: FakeApiService, 
     public searchS : SearchItemService, 
+    public walletS : WalletService,
     public voteS : VotingService, 
     private router: Router,
     private alert: AlertController,
     private fb: FormBuilder) { 
       this.walletForm = this.fb.group({
         name: ['', Validators.required], 
-        balance: ['', [Validators.required, Validators.pattern(/^\d+$/)]], 
+        balance: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]], 
       });
     }
 
@@ -56,18 +61,25 @@ export class HomePage implements OnInit {
   }
 
   loadData() {
-    this.fakeApi.getListPet().pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => { this.data = data; },
-        error: (err) => { console.error(err); },
-      });
+    this.walletS.getWallets().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (data) => { this.dataWallet = data;
+        this.totals = this.dataWallet.reduce((sum, wallet) => sum + wallet.balance, 0);
+       },
+      error: (err) => { console.error(err); }
+    })
+
+    // this.fakeApi.getListPet().pipe(takeUntil(this.destroy$))
+    //   .subscribe({
+    //     next: (data) => { this.data = data; },
+    //     error: (err) => { console.error(err); },
+    //   });
   }
 
   goDetail(){
     this.router.navigate(['/details'])
   }
 
-  async deleteWallet(id: number) {
+  async deleteWallet(id: string) {
     const alert = await this.alert.create({
       header: 'Xác nhận xóa',
       message: 'Bạn có chắc chắn muốn xóa ví này?',
@@ -91,11 +103,20 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  confirmDelete(id: number) {
-    console.log(`del: ${id}`);
+  confirmDelete(walletId: string) {
+    if (!walletId) return;
+  
+    this.walletS.deleteWallet(walletId).subscribe({
+      next: () => {
+        this.dataWallet = this.dataWallet.filter(w => w.id !== walletId);
+        this.loadData();
+      },
+      error: (err) => console.error('Lỗi khi xoá ví:', err)
+    });
   }
+  
 
-  async addWallet(id: number) {
+  async addWallet() {
     if (this.walletForm.valid) {
       const alert = await this.alert.create({
         header: 'Xác nhận thêm ví',
@@ -111,7 +132,7 @@ export class HomePage implements OnInit {
           {
             text: 'Yes',
             handler: () => {
-              this.confirmAdd(id);
+              this.createWallet();
             }
           }
         ]
@@ -120,11 +141,23 @@ export class HomePage implements OnInit {
     } else {
       console.log('invalid form');
     }
-
   }
 
-  confirmAdd(id: number) {
-    console.log(`add vi: ${id}`);
+  createWallet() {
+    if (this.walletForm.valid) {
+      const newWallet = this.walletForm.value;
+      
+      this.walletS.addWallet(newWallet).subscribe({
+        next: (res) => {
+          this.loadData();
+          this.walletForm.reset();
+        },
+        error: (err) => {
+          console.error('Lỗi khi thêm ví:', err);
+          alert('Lỗi! Không thể thêm ví.');
+        }
+      });
+    }
   }
 
   onSearchChange(event: CustomEvent) {

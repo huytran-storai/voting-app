@@ -18,7 +18,7 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Tổng: 3.000.000</ion-card-title>
+      <ion-card-title>Tổng: {{totals | number:'1.0-0'}} VND</ion-card-title>
       <ion-card-subtitle>
       </ion-card-subtitle>
     </ion-card-header>
@@ -40,7 +40,7 @@
         </ion-item>
 
         <ion-row class="btn-add">
-          <ion-button size="medium" color="success" (click)="addWallet(1)" [disabled]="walletForm.invalid">
+          <ion-button size="medium" color="success" (click)="addWallet()" [disabled]="walletForm.invalid">
             <ion-icon name="add-circle-outline"></ion-icon> Thêm Ví
           </ion-button>
         </ion-row>
@@ -54,9 +54,9 @@
   
     <ion-card-content>
       <ion-list>
-        <ion-item>
-          <ion-label (click)="goDetail()">Ví 1 (3.000.000) </ion-label>
-          <ion-button (click)="deleteWallet(1)" color="danger">X</ion-button>
+        <ion-item *ngFor="let wallet of dataWallet">
+          <ion-label (click)="goDetail()">{{wallet.name}} : {{ wallet.balance | number:'1.0-0' }} VND </ion-label>
+          <ion-button (click)="deleteWallet(wallet.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>

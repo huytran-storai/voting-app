@@ -2,6 +2,10 @@ ion-item {
     --padding-start: 0;
 }
 
+ion-content {
+    --background: url('https://img5.thuthuatphanmem.vn/uploads/2021/11/09/hinh-nen-chu-meo-may-doremon-cho-dien-thoai_092720489.jpg') no-repeat center center / cover;
+  }
+
 ion-card-header.ios {
     display: flex;
     flex-flow: column-reverse;
