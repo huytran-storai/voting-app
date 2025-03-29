@@ -3,19 +3,19 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/" text="Quay về" color="success"></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      Ví 1
+    <ion-title *ngIf="wallet?.length">
+      {{ wallet[0].name }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Tổng: 600.000</ion-card-title>
+      <ion-card-title *ngIf="wallet?.length">Tổng: {{wallet[0].balance | number:'1.0-0'}} VND</ion-card-title>
       <ion-card-subtitle>Lần cuối cùng ghi chú: 01/07/2025 09:78:99 </ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content class="container">
-      <ion-row class="container-item">
+    <ion-card-content class="container" *ngIf="transactions.length > 0; else noTransactions">
+      <!-- <ion-row class="container-item">
         <div class="time">
           <p>01/07/2025</p>
           <ion-button color="danger" shape="round"> X </ion-button>
@@ -24,79 +24,21 @@
           <ion-icon class="icon-transition income" name="thumbs-up-outline"></ion-icon>
           <ion-label>lương - 5000k</ion-label>
         </div>
-
-      </ion-row>
-      <ion-row class="container-item">
+      </ion-row> -->
+      <ion-row class="container-item" *ngFor="let transaction of transactions">
         <div class="time">
-          <p>01/07/2025</p>
+          <p>{{ transaction.created_at | date:'short' }}</p>
           <ion-button color="danger" shape="round"> X </ion-button>
         </div>
         <div class="txt">
           <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
-        </div>
-      </ion-row>
-      <ion-row class="container-item">
-        <div class="time">
-          <p>01/07/2025</p>
-          <ion-button color="danger" shape="round"> X </ion-button>
-        </div>
-        <div class="txt">
-          <ion-icon class="icon-transition uncome" name="cash-outline"></ion-icon>
-          <ion-label>mua đồ - 200k</ion-label>
+          <ion-label>{{ transaction.note }} - {{ transaction.amout | number:'1.0-0' }} VND</ion-label>
         </div>
       </ion-row>
     </ion-card-content>
+    <ng-template #noTransactions>
+      <p>Không có giao dịch nào.</p>
+    </ng-template>
   </ion-card>
   <ion-card>
     <ion-card>

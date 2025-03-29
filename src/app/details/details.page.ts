@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { WalletService } from '../services/wallet.service';
 
 @Component({
   selector: 'app-details',
@@ -11,17 +13,49 @@ import { Router } from '@angular/router';
 })
 export class DetailsPage implements OnInit {
   walletForm: FormGroup;
-
-  constructor(private router: Router,
-      private alert: AlertController,
-      private fb: FormBuilder) { 
-        this.walletForm = this.fb.group({
-          name: ['', Validators.required], 
-          balance: ['', [Validators.required, Validators.pattern(/^\d+$/)]], 
-        });
-      }
+  walletId: string | null = null;
+  wallet: any;
+  transactions: any[] = [];
+  constructor(private route: ActivatedRoute, private router: Router,
+    private walletService: WalletService,
+    private alert: AlertController,
+    private fb: FormBuilder) {
+    this.walletForm = this.fb.group({
+      name: ['', Validators.required],
+      balance: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    });
+  }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.walletId = params.get('id');
+      this.loadWalletDetails();
+      this.getTransactions();
+    });
+  }
+
+  loadWalletDetails() {
+    if (this.walletId) {
+      this.walletService.getWalletById(this.walletId).subscribe(data => {
+        this.wallet = data;
+        this.walletForm.patchValue({
+          name: this.wallet.name,
+          balance: this.wallet.balance
+        });
+      });
+    }
+  }
+
+  getTransactions() {
+    if (this.walletId) {
+      this.walletService.getTransactionsByWalletId(this.walletId).subscribe({
+        next: (data) => { 
+          console.log("Transactions:", data);
+          this.transactions = data;
+        },
+        error: (err) => console.error("API Error:", err)
+      });
+    }
   }
 
   async addWallet(id: number) {

@@ -7,14 +7,16 @@ import { Observable } from 'rxjs';
 })
 export class WalletService {
   private apiUrl = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/wallets';
+  private apiUrlTransi = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/transactions';
   private headers = {
     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9reHBqeHBneXVldmhwanNyeXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NjIyNzIsImV4cCI6MjA1ODEzODI3Mn0.jfzK-24_uVWblQ1DgjqxUciPfONpK5OEYILv5QZeFjA',
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9reHBqeHBneXVldmhwanNyeXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NjIyNzIsImV4cCI6MjA1ODEzODI3Mn0.jfzK-24_uVWblQ1DgjqxUciPfONpK5OEYILv5QZeFjA',
     'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
   };
 
-  constructor(private http: HttpClient) {}
-
+  constructor(private http: HttpClient) { }
+  //wallets table
   getWallets(): Observable<any> {
     return this.http.get(this.apiUrl, { headers: this.headers });
   }
@@ -30,4 +32,25 @@ export class WalletService {
   deleteWallet(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}?id=eq.${id}`, { headers: this.headers });
   }
+
+  getWalletById(id: string) {
+    return this.http.get(`${this.apiUrl}?id=eq.${id}`, { headers: this.headers });
+  }
+  //transactions table
+  getTransactionsByWalletId(walletId: string): Observable<any> {
+    return this.http.get(`${this.apiUrlTransi}?wallet_id=eq.${walletId}`, { headers: this.headers });
+  }
+
+  addTransaction(wallet: any): Observable<any> {
+    return this.http.post(this.apiUrlTransi, wallet, { headers: this.headers });
+  }
+
+  updateTransaction(id: string, data: any): Observable<any> {
+    return this.http.patch(`${this.apiUrlTransi}?id=eq.${id}`, data, { headers: this.headers });
+  }
+
+  deleteTransaction(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrlTransi}?id=eq.${id}`, { headers: this.headers });
+  }
+
 }

@@ -55,7 +55,7 @@
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let wallet of dataWallet">
-          <ion-label (click)="goDetail()">{{wallet.name}} : {{ wallet.balance | number:'1.0-0' }} VND </ion-label>
+          <ion-label (click)="goDetail(wallet)">{{wallet.name}} : {{ wallet.balance | number:'1.0-0' }} VND </ion-label>
           <ion-button (click)="deleteWallet(wallet.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
         </ion-item>
       </ion-list>

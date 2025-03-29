@@ -28,30 +28,31 @@ export class HomePage implements OnInit {
   getWallets: any;
   totals: any = 0;
 
-  constructor(public fakeApi: FakeApiService, 
-    public searchS : SearchItemService, 
-    public walletS : WalletService,
-    public voteS : VotingService, 
+  constructor(public fakeApi: FakeApiService,
+    public searchS: SearchItemService,
+    public walletS: WalletService,
+    public voteS: VotingService,
     private router: Router,
     private alert: AlertController,
-    private fb: FormBuilder) { 
-      this.walletForm = this.fb.group({
-        name: ['', Validators.required], 
-        balance: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]], 
-      });
-    }
+    private fb: FormBuilder) {
+    this.walletForm = this.fb.group({
+      name: ['', Validators.required],
+      balance: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
 
     this.voteS.emitVote().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => { this.data = data; this.loadingVote = false;},
+      next: (data) => { this.data = data; this.loadingVote = false; },
       error: (err) => { this.loadingVote = false; },
     });
 
     this.searchS.searchPets().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => { this.data = data; this.loading = false; },
-      error: (err) => {this.loading = false;},});
+      error: (err) => { this.loading = false; },
+    });
   }
 
   ngOnDestroy() {
@@ -62,9 +63,10 @@ export class HomePage implements OnInit {
 
   loadData() {
     this.walletS.getWallets().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => { this.dataWallet = data;
+      next: (data) => {
+        this.dataWallet = data;
         this.totals = this.dataWallet.reduce((sum, wallet) => sum + wallet.balance, 0);
-       },
+      },
       error: (err) => { console.error(err); }
     })
 
@@ -75,8 +77,9 @@ export class HomePage implements OnInit {
     //   });
   }
 
-  goDetail(){
-    this.router.navigate(['/details'])
+  goDetail(wallet: any) {
+    // this.router.navigate(['/details'])
+    this.router.navigate(['/details', { id: wallet.id }]);
   }
 
   async deleteWallet(id: string) {
@@ -105,7 +108,7 @@ export class HomePage implements OnInit {
 
   confirmDelete(walletId: string) {
     if (!walletId) return;
-  
+
     this.walletS.deleteWallet(walletId).subscribe({
       next: () => {
         this.dataWallet = this.dataWallet.filter(w => w.id !== walletId);
@@ -114,7 +117,6 @@ export class HomePage implements OnInit {
       error: (err) => console.error('Lỗi khi xoá ví:', err)
     });
   }
-  
 
   async addWallet() {
     if (this.walletForm.valid) {
@@ -139,22 +141,22 @@ export class HomePage implements OnInit {
       });
       await alert.present();
     } else {
-      console.log('invalid form');
+      alert("Liên hệ sỹ huy");
     }
   }
 
   createWallet() {
     if (this.walletForm.valid) {
       const newWallet = this.walletForm.value;
-      
+
       this.walletS.addWallet(newWallet).subscribe({
         next: (res) => {
           this.loadData();
           this.walletForm.reset();
         },
         error: (err) => {
+          alert("Liên hệ sỹ huy");
           console.error('Lỗi khi thêm ví:', err);
-          alert('Lỗi! Không thể thêm ví.');
         }
       });
     }
