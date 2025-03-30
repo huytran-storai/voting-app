@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-icon (click)="goBack()" name="arrow-back-circle-outline"></ion-icon>
+    <ion-buttons slot="start" class="back-icon-container">
+      <ion-icon (click)="goBack()" name="arrow-back-circle-outline" color="success"></ion-icon>
     </ion-buttons>
     <ion-title *ngIf="wallet?.length">
       {{ wallet[0].name }}

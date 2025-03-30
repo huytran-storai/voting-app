@@ -42,17 +42,17 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
+    // this.loadData();
 
-    this.voteS.emitVote().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => { this.data = data; this.loadingVote = false; },
-      error: (err) => { this.loadingVote = false; },
-    });
+    // this.voteS.emitVote().pipe(takeUntil(this.destroy$)).subscribe({
+    //   next: (data) => { this.data = data; this.loadingVote = false; },
+    //   error: (err) => { this.loadingVote = false; },
+    // });
 
-    this.searchS.searchPets().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => { this.data = data; this.loading = false; },
-      error: (err) => { this.loading = false; },
-    });
+    // this.searchS.searchPets().pipe(takeUntil(this.destroy$)).subscribe({
+    //   next: (data) => { this.data = data; this.loading = false; },
+    //   error: (err) => { this.loading = false; },
+    // });
   }
 
 
