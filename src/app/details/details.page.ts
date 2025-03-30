@@ -95,19 +95,16 @@ export class DetailsPage implements OnInit {
         if(!this.walletId) return;
         this.wallet[0].balance += transaction.amount;
         this.walletService.updateWallet(this.walletId, { balance: this.wallet[0].balance }).subscribe({
-          next: () => {
-            this.loadWalletDetails();
-            this.getTransactions();
-            this.walletForm.reset();
-          },
+          next: () => console.log('Wallet updated successfully'),
           error: (err) => console.error('Error updating wallet:', err)
         });
+        this.loadWalletDetails();
+        this.getTransactions();
       },
       error: (err) => console.error('Error deleting transaction:', err)
     });
   }
   
-
   addTransaction(isExpense: boolean) {
     if (this.walletForm.valid) {
       const { note, amount } = this.walletForm.value;
