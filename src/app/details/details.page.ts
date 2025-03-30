@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WalletService } from '../services/wallet.service';
-
+import { AbstractControl } from '@angular/forms';
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
@@ -22,7 +22,7 @@ export class DetailsPage implements OnInit {
     private fb: FormBuilder) {
     this.walletForm = this.fb.group({
       note: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      amount: ['', [Validators.required, this.customAmountValidator]],
     });
   }
 
@@ -33,6 +33,14 @@ export class DetailsPage implements OnInit {
       this.getTransactions();
     });
   }
+
+  customAmountValidator(control: AbstractControl) {
+    const value = control.value?.toString().toLowerCase();
+    if (!value) return { required: true };
+    const isValid = /^[0-9]+(\.?[0-9]*)?k?$/.test(value);
+    return isValid ? null : { invalidAmount: true };
+  }
+
   goBack() {
     this.router.navigate(['/']);
   }
@@ -146,5 +154,13 @@ export class DetailsPage implements OnInit {
       console.log('');
     }
   }
-
+  
+  onAmountChange(event: any) {
+    let inputValue = event.target.value.toLowerCase();
+    let numericValue = parseFloat(inputValue.replace(/[^\d]/g, ''));
+    if (inputValue.includes('k')) {
+      numericValue *= 1000;
+    }
+    this.walletForm.controls['amount'].setValue(numericValue);
+  }
 }

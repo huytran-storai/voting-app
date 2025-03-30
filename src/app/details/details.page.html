@@ -20,7 +20,8 @@
           <ion-button color="danger" shape="round" (click)="deleteTransaction(transaction)"> X </ion-button>
         </div>
         <div class="txt">
-          <ion-icon [name]="transaction.status == 1 ? 'cash-outline' : 'thumbs-up-outline'" class="icon-transition" [color]="transaction.status == 1 ? 'danger' : 'success'"></ion-icon>
+          <ion-icon [name]="transaction.status == 1 ? 'cash-outline' : 'thumbs-up-outline'" class="icon-transition"
+            [color]="transaction.status == 1 ? 'danger' : 'success'"></ion-icon>
           <ion-label>{{ transaction.note }} - {{ transaction.amount | number:'1.0-0' }} VND</ion-label>
         </div>
       </ion-row>
@@ -47,7 +48,8 @@
           </ion-item>
 
           <ion-item>
-            <ion-input labelPlacement="floating" formControlName="amount" type="number"
+            <ion-input labelPlacement="floating" formControlName="amount"
+              (ionInput)="onAmountChange($event)"
               [ngClass]="{'invalid': walletForm.controls['amount'].invalid && walletForm.controls['amount'].touched}">
               <div slot="label">Số tiền <ion-text color="danger">(*)</ion-text></div>
             </ion-input>

@@ -33,7 +33,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-input labelPlacement="floating" formControlName="balance" type="number"
+          <ion-input labelPlacement="floating" formControlName="balance" (ionInput)="onAmountChange($event)"
             [ngClass]="{'invalid': walletForm.controls['balance'].invalid && walletForm.controls['balance'].touched}">
             <div slot="label">Số dư <ion-text color="danger">(*)</ion-text></div>
           </ion-input>
@@ -51,18 +51,25 @@
     <ion-card-header>
       <ion-card-subtitle>Danh sách các ví</ion-card-subtitle>
     </ion-card-header>
-  
+
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let wallet of dataWallet">
           <ion-label (click)="goDetail(wallet)">{{wallet.name}} : {{ wallet.balance | number:'1.0-0' }} VND </ion-label>
-          <ion-button (click)="deleteWallet(wallet.id)" color="danger"><ion-icon name="trash-outline"></ion-icon></ion-button>
+          <ion-button (click)="deleteWallet(wallet.id)" color="danger"><ion-icon
+              name="trash-outline"></ion-icon></ion-button>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
-  
-  <ion-card>
+  <ion-row class="footer">
+    <div class="round-img">
+      <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
+      alt="hello kity"></ion-img>
+    </div>
+  </ion-row>
+
+  <!-- <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Tổng số dư sau các tháng ( chua lam xong )</ion-card-subtitle>
     </ion-card-header>
@@ -80,5 +87,5 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 </ion-content>

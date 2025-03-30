@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WalletService } from '../services/wallet.service';
-
+import { AbstractControl } from '@angular/forms';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
   dataWallet: any[] = [];
   getWallets: any;
   totals: any = 0;
+  
 
   constructor(public fakeApi: FakeApiService,
     public searchS: SearchItemService,
@@ -37,7 +38,7 @@ export class HomePage implements OnInit {
     private fb: FormBuilder) {
     this.walletForm = this.fb.group({
       name: ['', Validators.required],
-      balance: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      balance: ['', [Validators.required, this.customAmountValidator]],
     });
   }
 
@@ -85,6 +86,22 @@ export class HomePage implements OnInit {
   goDetail(wallet: any) {
     // this.router.navigate(['/details'])
     this.router.navigate(['/details', { id: wallet.id }]);
+  }
+
+  customAmountValidator(control: AbstractControl) {
+    const value = control.value?.toString().toLowerCase();
+    if (!value) return { required: true };
+    const isValid = /^[0-9]+(\.?[0-9]*)?k?$/.test(value);
+    return isValid ? null : { invalidAmount: true };
+  }
+
+  onAmountChange(event: any) {
+    let inputValue = event.target.value.toLowerCase();
+    let numericValue = parseFloat(inputValue.replace(/[^\d]/g, ''));
+    if (inputValue.includes('k')) {
+      numericValue *= 1000;
+    }
+    this.walletForm.controls['balance'].setValue(numericValue);
   }
 
   async deleteWallet(id: string) {
