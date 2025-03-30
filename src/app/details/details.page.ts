@@ -21,8 +21,8 @@ export class DetailsPage implements OnInit {
     private alert: AlertController,
     private fb: FormBuilder) {
     this.walletForm = this.fb.group({
-      name: ['', Validators.required],
-      balance: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      note: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
     });
   }
 
@@ -58,7 +58,7 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  async addWallet(id: number) {
+  async addWallet(status: boolean) {
     if (this.walletForm.valid) {
       const alert = await this.alert.create({
         header: 'Xác nhận thêm ví',
@@ -74,7 +74,7 @@ export class DetailsPage implements OnInit {
           {
             text: 'Yes',
             handler: () => {
-              this.confirmAdd(id);
+              this.addTransaction(status);
             }
           }
         ]
@@ -83,11 +83,53 @@ export class DetailsPage implements OnInit {
     } else {
       console.log('invalid form');
     }
-
   }
 
-  confirmAdd(id: number) {
-    console.log(`add vi: ${id}`);
+  deleteTransaction(transaction: any) {
+    if (!transaction) return;
+    this.walletService.deleteTransaction(transaction.id).subscribe({
+      next: () => {
+        this.wallet[0].balance += transaction.amount;
+  
+        this.walletService.updateWallet(this.wallet[0].id, { balance: this.wallet[0].balance }).subscribe({
+          next: () => console.log('Wallet updated successfully'),
+          error: (err) => console.error('Error updating wallet:', err)
+        });
+        this.loadWalletDetails();
+        this.getTransactions();
+        this.walletForm.reset();
+      },
+      error: (err) => console.error('Error deleting transaction:', err)
+    });
+  }
+  
+
+  addTransaction(isExpense: boolean) {
+    if (this.walletForm.valid) {
+      const { note, amount } = this.walletForm.value;
+      const status = isExpense ? 1 : 2; 
+      const newBalance = isExpense ? this.wallet[0].balance - amount : this.wallet[0].balance + amount;
+      if(this.walletId) {
+        this.walletService.addTransaction(this.walletId, note, amount, status).subscribe({
+          next: () => {
+            if(this.walletId) {
+              this.walletService.updateWalletBalance(this.walletId, newBalance).subscribe({
+                next: () => {
+                  this.wallet.balance = newBalance; 
+                  this.loadWalletDetails();
+                  this.getTransactions();
+                  this.walletForm.reset();
+                },
+                error: (err) => console.error(err)
+              });
+            }
+          },
+          error: (err) => console.error(err)
+        });
+      }
+    } else {
+      console.log('');
+    }
   }
 
 }

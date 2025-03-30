@@ -41,8 +41,14 @@ export class WalletService {
     return this.http.get(`${this.apiUrlTransi}?wallet_id=eq.${walletId}`, { headers: this.headers });
   }
 
-  addTransaction(wallet: any): Observable<any> {
-    return this.http.post(this.apiUrlTransi, wallet, { headers: this.headers });
+  addTransaction(walletId: string, note: string, amount: number, status: number): Observable<any> {
+    const data = { wallet_id: walletId, note, amount, status };
+    return this.http.post(`${this.apiUrlTransi}`, data, { headers: this.headers });
+  }
+
+  // 🔹 API: Cập nhật số dư ví
+  updateWalletBalance(walletId: string, newBalance: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}?id=eq.${walletId}`, { balance: newBalance }, { headers: this.headers });
   }
 
   updateTransaction(id: string, data: any): Observable<any> {
