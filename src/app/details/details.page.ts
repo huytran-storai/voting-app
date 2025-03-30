@@ -92,15 +92,16 @@ export class DetailsPage implements OnInit {
     if (!transaction) return;
     this.walletService.deleteTransaction(transaction.id).subscribe({
       next: () => {
+        if(!this.walletId) return;
         this.wallet[0].balance += transaction.amount;
-  
-        this.walletService.updateWallet(this.wallet[0].id, { balance: this.wallet[0].balance }).subscribe({
-          next: () => console.log('Wallet updated successfully'),
+        this.walletService.updateWallet(this.walletId, { balance: this.wallet[0].balance }).subscribe({
+          next: () => {
+            this.loadWalletDetails();
+            this.getTransactions();
+            this.walletForm.reset();
+          },
           error: (err) => console.error('Error updating wallet:', err)
         });
-        this.loadWalletDetails();
-        this.getTransactions();
-        this.walletForm.reset();
       },
       error: (err) => console.error('Error deleting transaction:', err)
     });
