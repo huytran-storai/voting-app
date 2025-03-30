@@ -55,10 +55,15 @@ export class HomePage implements OnInit {
     });
   }
 
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
     this.searchS.destroy();
+  }
+
+  ionViewWillEnter() {
+    this.loadData();
   }
 
   loadData() {

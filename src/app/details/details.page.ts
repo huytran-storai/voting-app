@@ -33,6 +33,9 @@ export class DetailsPage implements OnInit {
       this.getTransactions();
     });
   }
+  goBack() {
+    this.router.navigate(['/']);
+  }
 
   loadWalletDetails() {
     if (this.walletId) {
