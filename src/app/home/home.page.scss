@@ -60,13 +60,8 @@ ion-button {
     --padding-end: 5px;
 }
 
-table,
-th,
-td {
-    border: 0.5px solid rgb(31 30 30);
-}
-
-td {
+p {
     padding: 5px;
     text-align: center;
+    border-bottom: 0.5px solid rgb(31 30 30);
 }
