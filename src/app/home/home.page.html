@@ -22,9 +22,6 @@
     </ion-card-header>
   </ion-card>
   <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Danh sách các ví</ion-card-subtitle>
-    </ion-card-header>
     <ion-card-content>
       <table style="width:100%">
         <tr>
@@ -32,9 +29,9 @@
           <th><p>Số dư</p></th>
           <th></th>
         </tr>
-        <tr *ngFor="let wallet of dataWallet">
-          <td> <p>{{ wallet.name }}</p> </td>
-          <td> <p>{{ wallet.balance | number:'1.0-0' }} VND</p> </td>
+        <tr *ngFor="let wallet of dataWallet" class="moneny">
+          <td>{{ wallet.name }}</td>
+          <td>{{ wallet.balance | number:'1.0-0' }}</td>
           <td>
             <div class="wallet-action">
               <ion-button color="warning" fill="clear">
@@ -77,14 +74,14 @@
 
         <ion-row class="btn-add">
           <ion-button size="medium" color="success" (click)="addWallet()" [disabled]="walletForm.invalid">
-            <ion-icon name="add-circle-outline"></ion-icon> Thêm Ví
+            <ion-icon name="add-circle-outline"></ion-icon>
           </ion-button>
         </ion-row>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <!-- <ion-card>
+  <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Tổng số dư sau các tháng ( chua lam xong )</ion-card-subtitle>
     </ion-card-header>
@@ -102,5 +99,5 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
-  </ion-card> -->
+  </ion-card>
 </ion-content>
