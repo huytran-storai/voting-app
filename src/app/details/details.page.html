@@ -11,13 +11,17 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title *ngIf="wallet?.length">Tổng: {{wallet[0].balance | number:'1.0-0'}} VND</ion-card-title>
+      <ion-card-title *ngIf="wallet?.length">{{wallet[0].balance | number:'1.0-0'}} VND</ion-card-title>
     </ion-card-header>
     <ion-card-content class="container" *ngIf="transactions.length > 0; else noTransactions">
       <ion-row class="container-item" *ngFor="let transaction of transactions">
         <div class="time">
           <p>{{ transaction.created_at | date:'short' }}</p>
-          <ion-button color="danger" shape="round" (click)="deleteTransaction(transaction)"> X </ion-button>
+          <div>
+            <ion-icon name="create-outline" (click)="openEditModal(transaction.id)" color="warning"></ion-icon>
+            <ion-icon name="close-circle-outline" (click)="deleteTransaction(transaction)" color="danger"></ion-icon>
+          </div>
+          
         </div>
         <div class="txt">
           <ion-icon [name]="transaction.status == 1 ? 'cash-outline' : 'thumbs-up-outline'" class="icon-transition"
@@ -70,5 +74,10 @@
         </ion-list>
       </ion-card-content>
     </ion-card>
+    <div class="btn-clear">
+      <ion-button size="medium" color="warning" [disabled]="false" (click)="deleteAllTransaction()">
+        Xoá hết dữ liệu giao dịch
+      </ion-button>
+    </div>
   </ion-card>
 </ion-content>

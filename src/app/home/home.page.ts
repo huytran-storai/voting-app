@@ -221,7 +221,7 @@ export class HomePage implements OnInit {
   async openEditModal(walletId: string) {
     const modal = await this.modalController.create({
       component: EditWalletModalComponent,
-      componentProps: { walletId },
+      componentProps: { walletId , showWallet: true},
     });
 
     await modal.present();

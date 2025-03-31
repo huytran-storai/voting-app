@@ -41,8 +41,8 @@ export class WalletService {
     return this.http.get(`${this.apiUrlTransi}?wallet_id=eq.${walletId}`, { headers: this.headers });
   }
 
-  addTransaction(walletId: string, note: string, amount: number, status: number): Observable<any> {
-    const data = { wallet_id: walletId, note, amount, status };
+  addTransaction(walletId: string, note: string, amount: number, status: number, created_at: string): Observable<any> {
+    const data = { wallet_id: walletId, note, amount, status, created_at };
     return this.http.post(`${this.apiUrlTransi}`, data, { headers: this.headers });
   }
 

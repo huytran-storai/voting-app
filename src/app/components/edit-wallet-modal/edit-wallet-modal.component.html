@@ -1,13 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Chỉnh sửa ví {{walletOld.name}}</ion-title>
+    <ion-title *ngIf="showWallet">Chỉnh sửa ví {{walletOld.name}}</ion-title>
+    <ion-title *ngIf="!showWallet">Chỉnh sửa</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">Đóng</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="showWallet">
   <ion-list>
     <ion-item>
       <ion-label position="floating">Tên ví cũ ( {{walletOld.name}} )</ion-label>
@@ -21,5 +22,21 @@
 
   <ion-footer>
     <ion-button expand="full" (click)="updateWallet()">Lưu</ion-button>
+  </ion-footer>
+</ion-content>
+<ion-content *ngIf="!showWallet">
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Chua lam</ion-label>
+      <!-- <ion-input [(ngModel)]="walletData.name" (ionChange)="onInputChange()"></ion-input> -->
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating"></ion-label>
+      <!-- <ion-input [(ngModel)]="walletData.balance" type="number" (ionChange)="onInputChange()"></ion-input> -->
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <!-- <ion-button expand="full" (click)="updateWallet()">Lưu</ion-button> -->
   </ion-footer>
 </ion-content>

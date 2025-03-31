@@ -54,6 +54,10 @@ ion-card-content {
         align-items: center;
         gap: 10px;
         justify-content: space-between;
+        ion-icon {
+            font-size: 30px;
+            padding: 0 10px;
+        }
     }
 
     .txt {
@@ -62,4 +66,10 @@ ion-card-content {
         gap: 10px;
         padding-bottom: 10px;
     }
+}
+
+.btn-clear {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WalletService } from '../services/wallet.service';
 import { AbstractControl } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { EditWalletModalComponent } from '../components/edit-wallet-modal/edit-wallet-modal.component';
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
@@ -19,6 +21,7 @@ export class DetailsPage implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
     private walletService: WalletService,
     private alert: AlertController,
+    private modalController: ModalController,
     private fb: FormBuilder) {
     this.walletForm = this.fb.group({
       note: ['', Validators.required],
@@ -66,6 +69,9 @@ export class DetailsPage implements OnInit {
         error: (err) => console.error("API Error:", err)
       });
     }
+  }
+  deleteAllTransaction(){
+    this.AlertErr("Chua xong")
   }
 
   async addWallet(status: boolean) {
@@ -125,9 +131,10 @@ export class DetailsPage implements OnInit {
     if (this.walletForm.valid) {
       const { note, amount } = this.walletForm.value;
       const status = isExpense ? 1 : 2; 
+      const created_at = new Date().toISOString();
       const newBalance = isExpense ? this.wallet[0].balance - amount : this.wallet[0].balance + amount;
       if(this.walletId) {
-        this.walletService.addTransaction(this.walletId, note, amount, status).subscribe({
+        this.walletService.addTransaction(this.walletId, note, amount, status, created_at).subscribe({
           next: () => {
             if(this.walletId) {
               this.walletService.updateWalletBalance(this.walletId, newBalance).subscribe({
@@ -148,6 +155,27 @@ export class DetailsPage implements OnInit {
       console.log('');
     }
   }
+
+  edit(){
+    this.AlertErr("Chua xong")
+  }
+
+  async AlertErr(mess: string) {
+    const alert = await this.alert.create({
+      header: 'Lỗi!',
+      message: mess,
+      buttons: [
+        {
+          text: 'OKE',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancel');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
   
   onAmountChange(event: any) {
     let inputValue = event.target.value.toLowerCase();
@@ -157,4 +185,18 @@ export class DetailsPage implements OnInit {
     }
     this.walletForm.controls['amount'].setValue(numericValue);
   }
+
+  async openEditModal(trasiId: string) {
+      const modal = await this.modalController.create({
+        component: EditWalletModalComponent,
+        componentProps: { trasiId },
+      });
+  
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data) {
+        this.loadWalletDetails();
+        this.getTransactions();
+      }
+    }
 }
