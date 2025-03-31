@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Wallet
+      <ion-icon name="calendar-number-outline" color="danger" class="icon-header"></ion-icon>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -18,9 +18,47 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Tổng: {{totals | number:'1.0-0'}} VND</ion-card-title>
+      <ion-card-title> <ion-icon name="cash-outline" color="success"></ion-icon> {{totals | number:'1.0-0'}} VND</ion-card-title>
     </ion-card-header>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Danh sách các ví</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <table style="width:100%">
+        <tr>
+          <th><strong>Tên ví</strong></th>
+          <th><strong>Số dư</strong></th>
+          <th><strong></strong></th>
+        </tr>
+        <tr *ngFor="let wallet of dataWallet">
+          <td> <p>{{ wallet.name }}</p> </td>
+          <td> <p>{{ wallet.balance | number:'1.0-0' }} VND</p> </td>
+          <td>
+            <div class="wallet-action">
+              <ion-button color="warning" fill="clear">
+                <ion-icon name="pencil-outline"></ion-icon>
+              </ion-button>
+              <ion-button (click)="deleteWallet(wallet.id)" color="danger" fill="clear">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+              <ion-button (click)="goDetail(wallet)" color="success" fill="clear">
+                <ion-icon name="enter-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </ion-card-content>
 
+    <ion-row class="footer">
+      <div class="round-img">
+        <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
+        alt="hello kity"></ion-img>
+      </div>
+    </ion-row>
+    
     <ion-card-content>
       <ion-list [formGroup]="walletForm">
         <ion-item>
@@ -45,27 +83,6 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Danh sách các ví</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let wallet of dataWallet">
-          <ion-label (click)="goDetail(wallet)">{{wallet.name}} : {{ wallet.balance | number:'1.0-0' }} VND </ion-label>
-          <ion-button (click)="deleteWallet(wallet.id)" color="danger"><ion-icon
-              name="trash-outline"></ion-icon></ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  <ion-row class="footer">
-    <div class="round-img">
-      <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
-      alt="hello kity"></ion-img>
-    </div>
-  </ion-row>
 
   <!-- <ion-card>
     <ion-card-header>

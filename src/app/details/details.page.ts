@@ -61,7 +61,6 @@ export class DetailsPage implements OnInit {
     if (this.walletId) {
       this.walletService.getTransactionsByWalletId(this.walletId).subscribe({
         next: (data) => { 
-          console.log("Transactions:", data);
           this.transactions = data;
         },
         error: (err) => console.error("API Error:", err)
@@ -98,24 +97,19 @@ export class DetailsPage implements OnInit {
 
   deleteTransaction(transaction: any) {
     if (!transaction || !this.walletId) return;
-  
-    // Cập nhật UI ngay lập tức để tránh chờ API
     const currentWallet = this.wallet.find((w: { id: string | null; }) => w.id === this.walletId);
     if (!currentWallet) return;
   
     if (transaction.status == 1) {
-      currentWallet.balance += transaction.amount; // Chi tiêu → Hoàn lại tiền
+      currentWallet.balance += transaction.amount;
     } else if (transaction.status == 2) {
-      currentWallet.balance -= transaction.amount; // Thu nhập → Giảm tiền đi
+      currentWallet.balance -= transaction.amount;
     }
   
-    // Xóa transaction trên UI
     this.transactions = this.transactions.filter(t => t.id !== transaction.id);
   
-    // Gọi API xóa transaction
     this.walletService.deleteTransaction(transaction.id).subscribe({
       next: () => {
-        // Gọi API cập nhật lại balance của wallet
         if(!this.walletId) return
         this.walletService.updateWallet(this.walletId, { balance: currentWallet.balance }).subscribe({
           next: () => console.log('Wallet updated successfully'),

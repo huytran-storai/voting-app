@@ -2,22 +2,38 @@ ion-spinner {
     --color: #54dc98;
 }
 
+.icon-header {
+    font-size: 30px;
+}
+
 .btn-add {
     display: flex;
     justify-content: center;
-
-    ion-button {
-        padding: 10px;
-    }
 }
 
 ion-content {
     --background: url('https://i0.wp.com/ideawallpapers.com/wp-content/uploads/2022/08/hello-kitty-wallpaper-6.jpg?fit=567%2C1087&ssl=1') no-repeat center center / cover;
 }
 
+ion-card-title {
+    font-size: 30px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 ion-card-subtitle {
     font-size: 20px;
     font-weight: 600;
+    text-align: center;
+}
+
+.wallet-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer {
@@ -25,7 +41,7 @@ ion-card-subtitle {
     justify-content: center;
 
     .round-img {
-        width: 60%;
+        width: 20%;
         overflow: hidden;
         border-radius: 100px;
         margin-top: 20px;
@@ -36,4 +52,21 @@ ion-card-subtitle {
         height: 100%;
         object-fit: cover;
     }
+}
+
+
+ion-button {
+    --padding-start: 5px;
+    --padding-end: 5px;
+}
+
+table,
+th,
+td {
+    border: 0.5px solid rgb(31 30 30);
+}
+
+td {
+    padding: 5px;
+    text-align: center;
 }
