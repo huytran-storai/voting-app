@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Pet } from '../interfaces/pets.interfaces';
 import { FakeApiService } from '../services/fake-api.service';
@@ -9,6 +9,8 @@ import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WalletService } from '../services/wallet.service';
 import { AbstractControl } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { EditWalletModalComponent } from '../components/edit-wallet-modal/edit-wallet-modal.component';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -19,7 +21,6 @@ export class HomePage implements OnInit {
   data: Pet[] = [];
   loading = false;
   loadingVote = false;
-  isModalOpen = false;
   walletName = '';
   walletAmount: number | null = null;
   walletForm: FormGroup;
@@ -27,6 +28,8 @@ export class HomePage implements OnInit {
   dataWallet: any[] = [];
   getWallets: any;
   totals: any = 0;
+  isModalOpen = false;
+  selectedWallet: any = {};
   
 
   constructor(public fakeApi: FakeApiService,
@@ -35,6 +38,7 @@ export class HomePage implements OnInit {
     public voteS: VotingService,
     private router: Router,
     private alert: AlertController,
+    private modalController: ModalController,
     private fb: FormBuilder) {
     this.walletForm = this.fb.group({
       name: ['', Validators.required],
@@ -84,7 +88,6 @@ export class HomePage implements OnInit {
   }
 
   goDetail(wallet: any) {
-    // this.router.navigate(['/details'])
     this.router.navigate(['/details', { id: wallet.id }]);
   }
 
@@ -128,7 +131,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  confirmDelete(walletId: string) {
+  async confirmDelete(walletId: string) {
     if (!walletId) return;
 
     this.walletS.deleteWallet(walletId).subscribe({
@@ -136,8 +139,27 @@ export class HomePage implements OnInit {
         this.dataWallet = this.dataWallet.filter(w => w.id !== walletId);
         this.loadData();
       },
-      error: (err) => console.error('Lỗi khi xoá ví:', err)
+      error: (err) => {
+        this.AlertErr();
+      }
     });
+  }
+
+  async AlertErr() {
+    const alert = await this.alert.create({
+      header: 'Lỗi xóa ví!',
+      message: 'Hãy xóa hết các giao dịch liên quan đến ví này trước khi xóa.',
+      buttons: [
+        {
+          text: 'OKE',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancel');
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async addWallet() {
@@ -194,6 +216,19 @@ export class HomePage implements OnInit {
     this.loadingVote = true;
     this.voteS.vote(id);
     this.voteS.destroy();
+  }
+
+  async openEditModal(walletId: string) {
+    const modal = await this.modalController.create({
+      component: EditWalletModalComponent,
+      componentProps: { walletId },
+    });
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      this.loadData();
+    }
   }
 
 }

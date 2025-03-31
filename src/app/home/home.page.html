@@ -18,15 +18,20 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title> <ion-icon name="cash-outline" color="success"></ion-icon> {{totals | number:'1.0-0'}} VND</ion-card-title>
+      <ion-card-title> <ion-icon name="cash-outline" color="success"></ion-icon> {{totals | number:'1.0-0'}}
+        VND</ion-card-title>
     </ion-card-header>
   </ion-card>
   <ion-card>
     <ion-card-content>
       <table style="width:100%">
         <tr>
-          <th><p>Tên ví</p></th>
-          <th><p>Số dư</p></th>
+          <th>
+            <p>Tên ví</p>
+          </th>
+          <th>
+            <p>Số dư</p>
+          </th>
           <th></th>
         </tr>
         <tr *ngFor="let wallet of dataWallet" class="moneny">
@@ -34,7 +39,7 @@
           <td (click)="goDetail(wallet)">{{ wallet.balance | number:'1.0-0' }}</td>
           <td>
             <div class="wallet-action">
-              <ion-button color="warning" fill="clear">
+              <ion-button color="warning" fill="clear" (click)="openEditModal(wallet.id)">
                 <ion-icon name="pencil-outline"></ion-icon>
               </ion-button>
               <ion-button (click)="deleteWallet(wallet.id)" color="danger" fill="clear">
@@ -52,10 +57,10 @@
     <ion-row class="footer">
       <div class="round-img">
         <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
-        alt="hello kity"></ion-img>
+          alt="hello kity"></ion-img>
       </div>
     </ion-row>
-    
+
     <ion-card-content>
       <ion-list [formGroup]="walletForm">
         <ion-item>
@@ -85,7 +90,7 @@
     <ion-card-header>
       <ion-card-subtitle>Tổng số dư sau các tháng ( chua lam xong )</ion-card-subtitle>
     </ion-card-header>
-  
+
     <ion-card-content>
       <ion-list>
         <ion-item>
