@@ -30,8 +30,8 @@
           <th></th>
         </tr>
         <tr *ngFor="let wallet of dataWallet" class="moneny">
-          <td>{{ wallet.name }}</td>
-          <td>{{ wallet.balance | number:'1.0-0' }}</td>
+          <td (click)="goDetail(wallet)">{{ wallet.name }}</td>
+          <td (click)="goDetail(wallet)">{{ wallet.balance | number:'1.0-0' }}</td>
           <td>
             <div class="wallet-action">
               <ion-button color="warning" fill="clear">
