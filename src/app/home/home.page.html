@@ -35,12 +35,12 @@
           <th></th>
         </tr>
         <tr *ngFor="let wallet of dataWallet" class="moneny">
-          <td (click)="goDetail(wallet)">{{ wallet.name }}</td>
+          <td (click)="goDetail(wallet)"> <span>{{ wallet.name }}</span></td>
           <td (click)="goDetail(wallet)">{{ wallet.balance | number:'1.0-0' }}</td>
           <td>
             <div class="wallet-action">
               <ion-button color="warning" fill="clear" (click)="openEditModal(wallet.id)">
-                <ion-icon name="pencil-outline"></ion-icon>
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
               <ion-button (click)="deleteWallet(wallet.id)" color="danger" fill="clear">
                 <ion-icon name="trash-outline"></ion-icon>
