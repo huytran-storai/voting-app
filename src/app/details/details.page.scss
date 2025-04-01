@@ -73,3 +73,26 @@ ion-card-content {
     justify-content: center;
     padding: 10px;
 }
+
+.transaction-card {
+    padding: 20px;
+    p {
+        color: red;
+        font-size: 18px;
+        font-weight: 700;
+    }
+    .stat-row{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 5px;
+        .txt {
+            font-size: 16px;
+            color: black;
+        }
+    }
+}
+
+  
+
+  

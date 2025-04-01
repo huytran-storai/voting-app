@@ -80,4 +80,23 @@
       </ion-button>
     </div>
   </ion-card>
+  <ion-card class="transaction-card">
+    <ion-list *ngFor="let stat of transactionStats">
+      <ion-item>
+        <p><strong>Tuần bắt đầu:</strong> {{ stat.week_start | date:'short' }}</p>
+      </ion-item>
+      <ion-row class="stat-row">
+        <div class="txt"><strong>Thu chi:</strong> {{ stat.weekly_expense | number:'1.0-0' }}</div>
+        <div class="txt"><strong>Thu nhập:</strong> {{ stat.weekly_income | number:'1.0-0' }}</div>
+      </ion-row>
+      <ion-item>
+        <p><strong>Tháng:</strong> {{ stat.month_start | date:'short' }}</p>
+      </ion-item>
+      <ion-row class="stat-row">
+        <div class="txt"><strong>Thu chi:</strong> {{ stat.monthly_expense | number:'1.0-0' }}</div>
+        <div class="txt"><strong>Thu nhập:</strong> {{ stat.monthly_income | number:'1.0-0' }}</div>
+      </ion-row>
+    </ion-list>
+  </ion-card>
+  
 </ion-content>

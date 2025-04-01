@@ -18,6 +18,7 @@ export class DetailsPage implements OnInit {
   walletId: string | null = null;
   wallet: any;
   transactions: any[] = [];
+  transactionStats: any[] = [];
   constructor(private route: ActivatedRoute, private router: Router,
     private walletService: WalletService,
     private alert: AlertController,
@@ -56,6 +57,10 @@ export class DetailsPage implements OnInit {
           name: this.wallet.name,
           balance: this.wallet.balance
         });
+      });
+      this.walletService.getTransactionStats(this.walletId).subscribe((data) => {
+        this.transactionStats = data;
+        console.log(this.transactionStats); 
       });
     }
   }
