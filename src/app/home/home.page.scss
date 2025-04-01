@@ -2,8 +2,8 @@ ion-spinner {
     --color: #54dc98;
 }
 
-.icon-header {
-    font-size: 30px;
+ion-header {
+    background-color: #ffff;
 }
 
 .btn-add {
@@ -47,6 +47,15 @@ ion-card-title {
     .round-img ion-img {
         width: 100%;
         height: 100%;
+        object-fit: cover;
+    }
+}
+
+.round-img-title {
+    display: flex;
+    justify-content: center;
+    ion-img {
+        width: 15%;
         object-fit: cover;
     }
 }
