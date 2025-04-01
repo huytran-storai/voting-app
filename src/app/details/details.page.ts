@@ -123,12 +123,16 @@ export class DetailsPage implements OnInit {
       next: () => {
         if(!this.walletId) return
         this.walletService.updateWallet(this.walletId, { balance: currentWallet.balance }).subscribe({
-          next: () => console.log('Wallet updated successfully'),
+          next: () => {
+            this.loadWalletDetails();
+            this.getTransactions();
+          },
           error: (err) => console.error('Error updating wallet:', err)
         });
       },
       error: (err) => console.error('Error deleting transaction:', err)
     });
+    
   }
   
   
