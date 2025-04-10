@@ -26,7 +26,7 @@ export class AuthPage {
     verifyPassword() {
       const enteredPassword = this.password.trim();
       const hashedInput = CryptoJS.SHA256(enteredPassword).toString();
-      console.log("hashedInput", hashedInput)
+
       this.authService.checkpass().subscribe({
         next: (res) => {
           const dbHash = res[0]?.pass.trim();
