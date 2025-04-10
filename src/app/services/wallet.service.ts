@@ -9,6 +9,7 @@ export class WalletService {
   private apiUrl = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/wallets';
   private apiUrlTransi = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/transactions';
   private apiUrlStats = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/transaction_stats';
+  private apiUrlSumMonth = 'https://okxpjxpgyuevhpjsryzk.supabase.co/rest/v1/summary_table';
   private headers = {
     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9reHBqeHBneXVldmhwanNyeXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NjIyNzIsImV4cCI6MjA1ODEzODI3Mn0.jfzK-24_uVWblQ1DgjqxUciPfONpK5OEYILv5QZeFjA',
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9reHBqeHBneXVldmhwanNyeXprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI1NjIyNzIsImV4cCI6MjA1ODEzODI3Mn0.jfzK-24_uVWblQ1DgjqxUciPfONpK5OEYILv5QZeFjA',
@@ -62,6 +63,10 @@ export class WalletService {
   //get statistical table
   getTransactionStats(walletId: string): Observable<any> {
     return this.http.get(`${this.apiUrlStats}?wallet_id=eq.${walletId}`, { headers: this.headers });
+  }
+
+  getSum(): Observable<any> {
+    return this.http.get(`${this.apiUrlSumMonth}?select=*`, { headers: this.headers });
   }
 
 }

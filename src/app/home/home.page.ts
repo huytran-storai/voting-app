@@ -30,6 +30,7 @@ export class HomePage implements OnInit {
   totals: any = 0;
   isModalOpen = false;
   selectedWallet: any = {};
+  dataSum: any[] = [];
 
   
   constructor(public fakeApi: FakeApiService,
@@ -65,6 +66,14 @@ export class HomePage implements OnInit {
       next: (data) => {
         this.dataWallet = data;
         this.totals = this.dataWallet.reduce((sum, wallet) => sum + wallet.balance, 0);
+      },
+      error: (err) => { console.error(err); }
+    })
+    this.walletS.getSum().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (data) => {
+        console.log("dataaaa", data)
+        this.dataSum = data;
+        // this.totals = this.dataWallet.reduce((sum, wallet) => sum + wallet.balance, 0);
       },
       error: (err) => { console.error(err); }
     })

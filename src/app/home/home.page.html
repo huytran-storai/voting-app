@@ -87,5 +87,19 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  <ion-card class="transaction-card" *ngFor="let sum of dataSum">
+    <ion-card-header>
+      <ion-card-subtitle>
+          {{ sum.month_start | date:'MM/yyyy' }}
+      </ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <div class="stat-row">
+        <div class="txt"><strong>Thu chi:</strong> {{ sum.total_expense | number:'1.0-0' }}</div>
+        <div class="txt"><strong>Thu nhập:</strong> {{ sum.total_income | number:'1.0-0' }}</div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
