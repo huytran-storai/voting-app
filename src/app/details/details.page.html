@@ -14,7 +14,7 @@
       <ion-card-title *ngIf="wallet?.length">{{wallet[0].balance | number:'1.0-0'}} VND</ion-card-title>
     </ion-card-header>
     <ion-card-content class="container" *ngIf="transactions.length > 0; else noTransactions">
-      <ion-row class="container-item" *ngFor="let transaction of transactions">
+      <ion-row class="container-item" *ngFor="let transaction of transactions.slice().reverse()">
         <div class="time">
           <p>{{ transaction.created_at | date:'short' }}</p>
           <div>
