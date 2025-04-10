@@ -60,7 +60,7 @@ export class DetailsPage implements OnInit {
       });
       this.walletService.getTransactionStats(this.walletId).subscribe((data) => {
         this.transactionStats = data;
-        console.log(this.transactionStats); 
+        console.log(this.transactionStats);
       });
     }
   }
@@ -68,15 +68,15 @@ export class DetailsPage implements OnInit {
   getTransactions() {
     if (this.walletId) {
       this.walletService.getTransactionsByWalletId(this.walletId).subscribe({
-        next: (data) => { 
+        next: (data) => {
           this.transactions = data;
         },
         error: (err) => console.error("API Error:", err)
       });
     }
   }
-  deleteAllTransaction(){
-    this.AlertErr("Chua xong")
+  deleteAllTransaction() {
+    this.AlertErr("Lien he Dev Huy Tran de xoa database!")
   }
 
   async addWallet(status: boolean) {
@@ -106,22 +106,45 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  deleteTransaction(transaction: any) {
+  async deleteTransaction(transaction: boolean) {
+    const alert = await this.alert.create({
+      header: '😳',
+      message: 'Xác nhận xóa giao dịch?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancel');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteTransacitem(transaction);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  deleteTransacitem(transaction: any) {
     if (!transaction || !this.walletId) return;
     const currentWallet = this.wallet.find((w: { id: string | null; }) => w.id === this.walletId);
     if (!currentWallet) return;
-  
+
     if (transaction.status == 1) {
       currentWallet.balance += transaction.amount;
     } else if (transaction.status == 2) {
       currentWallet.balance -= transaction.amount;
     }
-  
+
     this.transactions = this.transactions.filter(t => t.id !== transaction.id);
-  
+
     this.walletService.deleteTransaction(transaction.id).subscribe({
       next: () => {
-        if(!this.walletId) return
+        if (!this.walletId) return
         this.walletService.updateWallet(this.walletId, { balance: currentWallet.balance }).subscribe({
           next: () => {
             this.loadWalletDetails();
@@ -132,23 +155,23 @@ export class DetailsPage implements OnInit {
       },
       error: (err) => console.error('Error deleting transaction:', err)
     });
-    
+
   }
-  
-  
+
+
   addTransaction(isExpense: boolean) {
     if (this.walletForm.valid) {
       const { note, amount } = this.walletForm.value;
-      const status = isExpense ? 1 : 2; 
+      const status = isExpense ? 1 : 2;
       const created_at = new Date().toISOString();
       const newBalance = isExpense ? this.wallet[0].balance - amount : this.wallet[0].balance + amount;
-      if(this.walletId) {
+      if (this.walletId) {
         this.walletService.addTransaction(this.walletId, note, amount, status, created_at).subscribe({
           next: () => {
-            if(this.walletId) {
+            if (this.walletId) {
               this.walletService.updateWalletBalance(this.walletId, newBalance).subscribe({
                 next: () => {
-                  this.wallet.balance = newBalance; 
+                  this.wallet.balance = newBalance;
                   this.loadWalletDetails();
                   this.getTransactions();
                   this.walletForm.reset();
@@ -165,13 +188,13 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  edit(){
+  edit() {
     this.AlertErr("Chua xong")
   }
 
   async AlertErr(mess: string) {
     const alert = await this.alert.create({
-      header: 'Lỗi!',
+      header: '⚠️',
       message: mess,
       buttons: [
         {
@@ -185,7 +208,7 @@ export class DetailsPage implements OnInit {
     });
     await alert.present();
   }
-  
+
   onAmountChange(event: any) {
     let inputValue = event.target.value.toLowerCase();
     let numericValue = parseFloat(inputValue.replace(/[^\d]/g, ''));
@@ -196,16 +219,16 @@ export class DetailsPage implements OnInit {
   }
 
   async openEditModal(trasiId: string) {
-      const modal = await this.modalController.create({
-        component: EditWalletModalComponent,
-        componentProps: { trasiId },
-      });
-  
-      await modal.present();
-      const { data } = await modal.onDidDismiss();
-      if (data) {
-        this.loadWalletDetails();
-        this.getTransactions();
-      }
+    const modal = await this.modalController.create({
+      component: EditWalletModalComponent,
+      componentProps: { trasiId },
+    });
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      this.loadWalletDetails();
+      this.getTransactions();
     }
+  }
 }
