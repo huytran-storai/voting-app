@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="showWallet">Chỉnh sửa ví {{walletOld.name}}</ion-title>
+    <ion-title *ngIf="showWallet">📝 {{walletOld.name}}</ion-title>
     <ion-title *ngIf="!showWallet">Chỉnh sửa</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Đóng</ion-button>
+    <ion-buttons slot="end" class="back-icon-container">
+      <ion-icon (click)="dismiss()" name="close-circle-outline" color="dark"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

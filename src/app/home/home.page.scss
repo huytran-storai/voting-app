@@ -20,12 +20,13 @@ ion-content {
 }
 
 ion-card-title {
-    font-size: 30px;
-    font-weight: 600;
+    font-size: 32px;
+    font-weight: 800;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    color: #3bb13bf0;
+    gap: 9px;
 }
 
 .wallet-action {
@@ -70,7 +71,7 @@ ion-button {
     padding: 5px;
     text-align: center;
     border-bottom: 0.5px solid rgb(31 30 30) !important;;
-    font-size: 14px;
+    font-size: 16px;
     span {
         font-style: italic;
         font-weight: 600;

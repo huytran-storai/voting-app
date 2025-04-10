@@ -1,0 +1,14 @@
+ion-button {
+    position: relative;
+    top: 190px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    left: 100px;
+}
+.back-icon-container {
+    ion-icon {
+        height: 30px;
+        width: 30px;
+    }
+}
