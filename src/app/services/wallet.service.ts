@@ -71,6 +71,6 @@ export class WalletService {
   }
 
   checkpass(): Observable<any> {
-    return this.http.get(`${this.apiAuth}?select=`, { headers: this.headers });
+    return this.http.get(`${this.apiAuth}?select=pass`, { headers: this.headers });
   }
 }

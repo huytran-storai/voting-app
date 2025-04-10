@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { ToastController } from '@ionic/angular';
 import { WalletService } from '../services/wallet.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-auth',
@@ -23,10 +24,13 @@ export class AuthPage {
     private toastCtrl: ToastController) {}
 
     verifyPassword() {
+      const enteredPassword = this.password.trim();
+      const hashedInput = CryptoJS.SHA256(enteredPassword).toString();
+      console.log("hashedInput", hashedInput)
       this.authService.checkpass().subscribe({
         next: (res) => {
-          const storedPass = res[0]?.pass;
-          if (this.password === storedPass) {
+          const dbHash = res[0]?.pass.trim();
+          if (hashedInput === dbHash) {
             localStorage.setItem('authTimestamp', Date.now().toString());
             this.router.navigate(['/home']);
           } else {
