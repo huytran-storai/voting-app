@@ -33,25 +33,20 @@ export class EditWalletModalComponent {
         }
       });
     }
-    // if (this.walletId) {
-    //   this.walletService.getTransactionsByWalletId(this.walletId).subscribe({
-    //     next: (data) => { 
-    //       this.transactionsOld = data;
-    //       console.log('Dữ liệu giao dịch:', this.transactionsOld); // Kiểm tra dữ liệu
-    //     },
-    //     error: (err) => console.error("API Error:", err)
-    //   });
-    // }
   }
 
   updateWallet() {
-    if (this.walletData.name == "") {
+    if (!this.walletData.name && !this.walletData.balance) {
+      this.dismiss(true);
+      return;
+    }
+    if (!this.walletData.name) {
       this.walletData.name = this.walletOld.name;
     }
-    if (this.walletData.balance == "") {
+    if (!this.walletData.balance) {
       this.walletData.balance = this.walletOld.balance;
     }
-    console.log('Dữ liệu gửi API:', this.walletData); // Kiểm tra dữ liệu
+
     this.walletService.updateWallet(this.walletId, this.walletData).subscribe(() => {
       this.dismiss(true);
     });
@@ -63,6 +58,22 @@ export class EditWalletModalComponent {
 
   onInputChange() {
     console.log('Dữ liệu mới:', this.walletData);
+  }
+  onInputChangeName() {
+  }
+  
+  onInputChangeBalance() {
+    let input = this.walletData.balance.toString().toLowerCase();
+    input = input.replace(/[^0-9k]/g, '');
+    let numericValue = parseFloat(input.replace('k', ''));
+    if (isNaN(numericValue)) {
+      this.walletData.balance = '';
+      return;
+    }
+    if (input.includes('k')) {
+      numericValue *= 1000;
+    }
+    this.walletData.balance = numericValue.toString() ;
   }
 
 }

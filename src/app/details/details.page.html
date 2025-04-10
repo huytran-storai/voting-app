@@ -18,7 +18,7 @@
         <div class="time">
           <p>{{ transaction.created_at | date:'short' }}</p>
           <div>
-            <ion-icon name="create-outline" (click)="openEditModal(transaction.id)" color="warning"></ion-icon>
+            <ion-icon name="create-outline" (click)="openEditModal(transaction)" color="warning"></ion-icon>
             <ion-icon name="close-circle-outline" (click)="deleteTransaction(transaction)" color="danger"></ion-icon>
           </div>
           

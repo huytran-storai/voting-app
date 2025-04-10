@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WalletService } from '../services/wallet.service';
 import { AbstractControl } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { EditWalletModalComponent } from '../components/edit-wallet-modal/edit-wallet-modal.component';
+import { EditTransModalComponent } from '../components/edit-trans-modal/edit-trans-modal.component';
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
@@ -218,10 +218,10 @@ export class DetailsPage implements OnInit {
     this.walletForm.controls['amount'].setValue(numericValue);
   }
 
-  async openEditModal(trasiId: string) {
+  async openEditModal(dataTransi: any) {
     const modal = await this.modalController.create({
-      component: EditWalletModalComponent,
-      componentProps: { trasiId },
+      component: EditTransModalComponent,
+      componentProps: { dataTransi },
     });
 
     await modal.present();

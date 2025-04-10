@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>📝 {{dataTransi.note}}</ion-title>
+    <ion-buttons slot="end" class="back-icon-container">
+      <ion-icon (click)="dismiss()" name="close-circle-outline" color="dark"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Tên giao dịch cũ( {{dataTransi.note}} )</ion-label>
+      <ion-input [(ngModel)]="transactionsData.note" (ionChange)="onInputChangeNote()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Số dư cũ ( {{dataTransi.amount}} )</ion-label>
+      <ion-input [(ngModel)]="transactionsData.amount" (ionChange)="onInputChangeAmount()"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-button expand="full" (click)="updateWallet()">Lưu</ion-button>
+  </ion-footer>
+</ion-content>
