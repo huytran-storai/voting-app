@@ -2,7 +2,11 @@
   <ion-toolbar>
     <ion-title>
       <div class="round-img-title">
-        <ion-img src="https://sparkgrowth.com/wp-content/uploads/2017/08/icon-cash-animated.gif"></ion-img>
+        <div class="marquee">
+          Làm lại cuộc đời đi bạn ơi, đừng có làm gì sai trái nữa, hãy sống thật tốt và thật hạnh phúc nhé. Chúc bạn luôn
+          vui vẻ và thành công trong cuộc sống. Vì mục tiêu 70 triệu cuối năm nào<ion-icon name="heart" color="danger"></ion-icon>
+        </div>
+        <!-- <ion-img src="https://sparkgrowth.com/wp-content/uploads/2017/08/icon-cash-animated.gif"></ion-img> -->
       </div>
     </ion-title>
   </ion-toolbar>
@@ -58,8 +62,8 @@
 
     <ion-row class="footer">
       <div class="round-img">
-        <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
-          alt="hello kity"></ion-img>
+        <!-- <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
+          alt="hello kity"></ion-img> -->
       </div>
     </ion-row>
 
@@ -90,10 +94,10 @@
   <ion-card class="transaction-card" *ngFor="let sum of dataSum">
     <ion-card-header>
       <ion-card-subtitle>
-          {{ sum.month_start | date:'MM/yyyy' }}
+        {{ sum.month_start | date:'MM/yyyy' }}
       </ion-card-subtitle>
     </ion-card-header>
-  
+
     <ion-card-content>
       <div class="stat-row">
         <div class="txt"><strong>Thu chi:</strong> {{ sum.total_expense | number:'1.0-0' }}</div>
