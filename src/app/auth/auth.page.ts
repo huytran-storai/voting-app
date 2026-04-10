@@ -26,10 +26,12 @@ export class AuthPage {
     verifyPassword() {
       const enteredPassword = this.password.trim();
       const hashedInput = CryptoJS.SHA256(enteredPassword).toString();
+      console.log('Hashed Input:', hashedInput);
 
       this.authService.checkpass().subscribe({
         next: (res) => {
-          const dbHash = res[0]?.pass.trim();
+          const dbHash = res[1]?.pass.trim();
+          
           if (hashedInput === dbHash) {
             localStorage.setItem('authTimestamp', Date.now().toString());
             this.router.navigate(['/home']);
