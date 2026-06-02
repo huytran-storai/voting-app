@@ -35,12 +35,14 @@
           <ion-icon name="arrow-down-outline"></ion-icon> Thu nhập
         </button>
       </div>
-      <div class="filter-row month-row">
-        <button class="pill" *ngFor="let m of availableMonths"
-          [class.active]="filterMonth === m"
-          (click)="filterMonth = m">
-          {{ formatMonth(m) }}
-        </button>
+      <div class="filter-row">
+        <ion-select class="month-select" [(ngModel)]="filterMonth"
+          interface="action-sheet"
+          [interfaceOptions]="{ header: 'Chọn tháng/năm' }">
+          <ion-select-option *ngFor="let m of availableMonths" [value]="m">
+            {{ formatMonth(m) }}
+          </ion-select-option>
+        </ion-select>
       </div>
     </div>
 
