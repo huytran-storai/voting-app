@@ -1,101 +1,125 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start" class="back-icon-container">
-      <ion-icon (click)="goBack()" name="arrow-back-circle-outline" color="success"></ion-icon>
+      <ion-icon (click)="goBack()" name="arrow-back-circle-outline"></ion-icon>
     </ion-buttons>
-    <ion-title *ngIf="wallet?.length">
-      {{ wallet[0].name }}
-    </ion-title>
+    <ion-title *ngIf="wallet?.length">{{ wallet[0].name }}</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title *ngIf="wallet?.length">{{wallet[0].balance | number:'1.0-0'}} VND</ion-card-title>
-    </ion-card-header>
-    <ion-card-content class="container" *ngIf="transactions.length > 0; else noTransactions">
-      <ion-row class="container-item" *ngFor="let transaction of transactions.slice().reverse()">
-        <div class="time">
-          <p>{{ transaction.created_at | date:'short' }}</p>
-          <div>
-            <ion-icon name="create-outline" (click)="openEditModal(transaction)" color="warning"></ion-icon>
-            <ion-icon name="close-circle-outline" (click)="deleteTransaction(transaction)" color="danger"></ion-icon>
+
+  <!-- Balance card -->
+  <ion-card class="balance-card" *ngIf="wallet?.length">
+    <div class="balance-label">Số dư hiện tại</div>
+    <div class="balance-amount">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <span>{{ wallet[0].balance | number:'1.0-0' }} VND</span>
+    </div>
+  </ion-card>
+
+  <!-- Transaction list -->
+  <ion-card class="trans-list-card">
+    <div class="section-header">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <span>Lịch sử giao dịch</span>
+    </div>
+    <div class="trans-list" *ngIf="transactions.length > 0; else noTransactions">
+      <div class="trans-item" *ngFor="let transaction of transactions"
+        [class.expense]="transaction.status == 1"
+        [class.income]="transaction.status == 2">
+        <div class="trans-icon-wrap">
+          <ion-icon [name]="transaction.status == 1 ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
+        </div>
+        <div class="trans-info">
+          <span class="trans-note">{{ transaction.note }}</span>
+          <span class="trans-date">{{ transaction.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="trans-right">
+          <span class="trans-amount" [class.neg]="transaction.status == 1" [class.pos]="transaction.status == 2">
+            {{ transaction.status == 1 ? '-' : '+' }}{{ transaction.amount | number:'1.0-0' }}đ
+          </span>
+          <div class="trans-actions">
+            <ion-icon name="create-outline" (click)="openEditModal(transaction)"></ion-icon>
+            <ion-icon name="close-circle-outline" (click)="deleteTransaction(transaction)"></ion-icon>
           </div>
-          
         </div>
-        <div class="txt">
-          <ion-icon [name]="transaction.status == 1 ? 'cash-outline' : 'thumbs-up-outline'" class="icon-transition"
-            [color]="transaction.status == 1 ? 'danger' : 'success'"></ion-icon>
-          <ion-label>{{ transaction.note }} - {{ transaction.amount | number:'1.0-0' }} VND</ion-label>
-        </div>
-      </ion-row>
-    </ion-card-content>
+      </div>
+    </div>
     <ng-template #noTransactions>
-      <p>Không có giao dịch nào.</p>
+      <div class="empty-state">
+        <ion-icon name="document-outline"></ion-icon>
+        <p>Chưa có giao dịch nào</p>
+      </div>
     </ng-template>
   </ion-card>
-  <ion-card>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Ghi chú: </ion-card-title>
-        <ion-card-subtitle>
-        </ion-card-subtitle>
-      </ion-card-header>
 
-      <ion-card-content>
-        <ion-list [formGroup]="walletForm">
-          <ion-item>
-            <ion-input labelPlacement="floating" formControlName="note"
-              [ngClass]="{'invalid': walletForm.controls['note'].invalid && walletForm.controls['note'].touched}">
-              <div slot="label">Nội dung <ion-text color="danger">(*)</ion-text></div>
-            </ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input labelPlacement="floating" formControlName="amount"
-              (ionInput)="onAmountChange($event)"
-              [ngClass]="{'invalid': walletForm.controls['amount'].invalid && walletForm.controls['amount'].touched}">
-              <div slot="label">Số tiền <ion-text color="danger">(*)</ion-text></div>
-            </ion-input>
-          </ion-item>
-
-          <ion-row class="btn-add">
-            <ion-col>
-              <ion-button size="medium" color="danger" (click)="addTransaction(true)" [disabled]="walletForm.invalid">
-                Chi Tiêu
-              </ion-button>
-            </ion-col>
-            <ion-col>
-              <ion-button size="medium" color="success" (click)="addTransaction(false)" [disabled]="walletForm.invalid">
-                Thu nhập
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-    <div class="btn-clear">
-      <ion-button size="medium" color="warning" [disabled]="false" (click)="deleteAllTransaction()">
-        Xoá hết dữ liệu giao dịch
+  <!-- Add transaction form -->
+  <ion-card class="trans-form-card">
+    <div class="section-header">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      <span>Thêm giao dịch</span>
+    </div>
+    <div class="add-trans-form" [formGroup]="walletForm">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="field-label">Nội dung <span class="required">*</span></label>
+          <ion-input class="custom-input" formControlName="note" placeholder="Mô tả giao dịch"
+            [ngClass]="{'invalid': walletForm.controls['note'].invalid && walletForm.controls['note'].touched}">
+          </ion-input>
+        </div>
+        <div class="form-field">
+          <label class="field-label">Số tiền <span class="required">*</span></label>
+          <ion-input class="custom-input" formControlName="amount" placeholder="VD: 200k"
+            (ionInput)="onAmountChange($event)"
+            [ngClass]="{'invalid': walletForm.controls['amount'].invalid && walletForm.controls['amount'].touched}">
+          </ion-input>
+        </div>
+      </div>
+      <div class="btn-row">
+        <ion-button expand="block" color="danger" (click)="addTransaction(true)" [disabled]="walletForm.invalid" class="trans-btn">
+          <ion-icon name="arrow-up-outline" slot="start"></ion-icon>
+          Chi tiêu
+        </ion-button>
+        <ion-button expand="block" color="success" (click)="addTransaction(false)" [disabled]="walletForm.invalid" class="trans-btn">
+          <ion-icon name="arrow-down-outline" slot="start"></ion-icon>
+          Thu nhập
+        </ion-button>
+      </div>
+      <ion-button expand="block" fill="outline" color="warning" (click)="deleteAllTransaction()" class="clear-btn">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Xoá hết giao dịch
       </ion-button>
     </div>
   </ion-card>
-  <ion-card class="transaction-card" *ngFor="let stat of transactionStats">
-    <ion-card-header>
-      <ion-card-subtitle>
-        <p>
-          {{ stat.type === 'week' ? 'Tuần bắt đầu' : 'Tháng' }}: {{ stat.period_start | date:'shortDate' }}
-        </p>
-      </ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      <div class="stat-row">
-        <div class="txt"><strong>Thu chi:</strong> {{ stat.expense | number:'1.0-0' }}</div>
-        <div class="txt"><strong>Thu nhập:</strong> {{ stat.income | number:'1.0-0' }}</div>
+
+  <!-- Stats card with dropdown -->
+  <ion-card class="stat-card" *ngIf="transactionStats.length > 0">
+    <div class="stat-header">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+      <span>Thống kê</span>
+      <ion-select
+        class="stat-select"
+        [(ngModel)]="selectedStatIdx"
+        interface="action-sheet"
+        [interfaceOptions]="{ header: 'Chọn kỳ thống kê' }">
+        <ion-select-option *ngFor="let stat of transactionStats; let i = index" [value]="i">
+          {{ stat.type === 'week' ? 'Tuần' : 'Tháng' }} — {{ stat.period_start | date:'dd/MM/yyyy' }}
+        </ion-select-option>
+      </ion-select>
+    </div>
+
+    <div class="stat-body" *ngIf="selectedStat">
+      <div class="stat-item expense">
+        <span class="stat-label">Thu chi</span>
+        <span class="stat-value">{{ selectedStat.expense | number:'1.0-0' }}đ</span>
       </div>
-    </ion-card-content>
+      <div class="stat-divider"></div>
+      <div class="stat-item income">
+        <span class="stat-label">Thu nhập</span>
+        <span class="stat-value">{{ selectedStat.income | number:'1.0-0' }}đ</span>
+      </div>
+    </div>
   </ion-card>
-  
-  
+
 </ion-content>

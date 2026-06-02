@@ -2,106 +2,127 @@
   <ion-toolbar>
     <ion-title>
       <div class="round-img-title">
-        <div class="marquee">
-          Làm lại cuộc đời đi bạn ơi, đừng có làm gì sai trái nữa, hãy sống thật tốt và thật hạnh phúc nhé. Chúc bạn luôn
-          vui vẻ và thành công trong cuộc sống. Vì mục tiêu 70 triệu cuối năm nào<ion-icon name="heart" color="danger"></ion-icon>
-        </div>
-        <!-- <ion-img src="https://sparkgrowth.com/wp-content/uploads/2017/08/icon-cash-animated.gif"></ion-img> -->
+        <ion-img src="https://sparkgrowth.com/wp-content/uploads/2017/08/icon-cash-animated.gif"></ion-img>
       </div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<!-- <ion-searchbar placeholder="search" (ionInput)="onSearchChange($event)"></ion-searchbar>
-  <ion-skeleton-text *ngIf="loading" [animated]="true" style="width: 100%; height: 30px; margin: 10px;"></ion-skeleton-text> -->
-<!-- <ion-list [inset]="true">
-    <ion-item *ngFor="let pet of data">
-      <ion-label>{{pet.name}}</ion-label>
-      <ion-chip color="success">{{pet.votes}}</ion-chip>
-      <ion-spinner name="circular" *ngIf="loadingVote"></ion-spinner>
-      <ion-button shape="round" *ngIf="!loadingVote" [color]="pet.votes > 0 ? 'danger' : 'medium'" (click)="onVote(pet.id)"><ion-icon slot="icon-only" name="heart"></ion-icon></ion-button>
-    </ion-item>
-  </ion-list> -->
 <ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title> <ion-icon name="cash-outline" color="success"></ion-icon> {{totals | number:'1.0-0'}}
-        VND</ion-card-title>
-    </ion-card-header>
+  <ion-card class="total-card">
+    <div class="total-label">Tổng số dư</div>
+    <div class="total-amount">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <span>{{ totals | number:'1.0-0' }} VND</span>
+    </div>
   </ion-card>
-  <ion-card>
-    <ion-card-content>
-      <table style="width:100%">
-        <tr>
-          <th>
-            <p>Tên ví</p>
-          </th>
-          <th>
-            <p>Số dư</p>
-          </th>
-          <th></th>
-        </tr>
-        <tr *ngFor="let wallet of dataWallet" class="moneny">
-          <td (click)="goDetail(wallet)"> <span>{{ wallet.name }}</span></td>
-          <td (click)="goDetail(wallet)">{{ wallet.balance | number:'1.0-0' }}</td>
-          <td>
-            <div class="wallet-action">
-              <ion-button color="warning" fill="clear" (click)="openEditModal(wallet.id)">
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
-              <ion-button (click)="deleteWallet(wallet.id)" color="danger" fill="clear">
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-button>
-              <ion-button (click)="goDetail(wallet)" color="success" fill="clear">
-                <ion-icon name="enter-outline"></ion-icon>
-              </ion-button>
-            </div>
-          </td>
-        </tr>
+
+  <ion-card class="wallet-card">
+    <div class="section-header">
+      <ion-icon name="layers-outline"></ion-icon>
+      <span>Danh sách ví</span>
+    </div>
+    <ion-card-content class="wallet-table-content">
+      <table class="wallet-table">
+        <thead>
+          <tr>
+            <th>Tên ví</th>
+            <th>Số dư</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let wallet of dataWallet" class="wallet-row">
+            <td (click)="goDetail(wallet)"><span class="wallet-name">{{ wallet.name }}</span></td>
+            <td (click)="goDetail(wallet)" class="wallet-balance">{{ wallet.balance | number:'1.0-0' }}</td>
+            <td>
+              <div class="wallet-action">
+                <ion-button color="warning" fill="clear" (click)="openEditModal(wallet.id)">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="deleteWallet(wallet.id)" color="danger" fill="clear">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="goDetail(wallet)" color="success" fill="clear">
+                  <ion-icon name="enter-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </ion-card-content>
 
-    <ion-row class="footer">
-      <div class="round-img">
-        <!-- <ion-img src="https://i.pinimg.com/originals/8c/c5/6c/8cc56c417138b7de11a576030f954d9e.gif"
-          alt="hello kity"></ion-img> -->
-      </div>
-    </ion-row>
+    <div class="divider"></div>
 
-    <ion-card-content>
-      <ion-list [formGroup]="walletForm">
-        <ion-item>
-          <ion-input labelPlacement="floating" formControlName="name"
+    <div class="section-header">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      <span>Thêm ví mới</span>
+    </div>
+    <div class="add-wallet-form" [formGroup]="walletForm">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="field-label">Tên ví <span class="required">*</span></label>
+          <ion-input class="custom-input" formControlName="name" placeholder="Nhập tên ví"
             [ngClass]="{'invalid': walletForm.controls['name'].invalid && walletForm.controls['name'].touched}">
-            <div slot="label">Tên ví <ion-text color="danger">(*)</ion-text></div>
           </ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-input labelPlacement="floating" formControlName="balance" (ionInput)="onAmountChange($event)"
+        </div>
+        <div class="form-field">
+          <label class="field-label">Số dư <span class="required">*</span></label>
+          <ion-input class="custom-input" formControlName="balance" placeholder="VD: 500k"
+            (ionInput)="onAmountChange($event)"
             [ngClass]="{'invalid': walletForm.controls['balance'].invalid && walletForm.controls['balance'].touched}">
-            <div slot="label">Số dư <ion-text color="danger">(*)</ion-text></div>
           </ion-input>
-        </ion-item>
-
-        <ion-row class="btn-add">
-          <ion-button size="medium" color="success" (click)="addWallet()" [disabled]="walletForm.invalid">
-            <ion-icon name="add-circle-outline"></ion-icon>
-          </ion-button>
-        </ion-row>
-      </ion-list>
-    </ion-card-content>
+        </div>
+      </div>
+      <ion-button expand="block" color="success" (click)="addWallet()" [disabled]="walletForm.invalid" class="add-btn">
+        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        Thêm ví
+      </ion-button>
+    </div>
   </ion-card>
   <ion-card class="transaction-card" *ngFor="let sum of dataSum">
-    <ion-card-header>
-      <ion-card-subtitle>
-        {{ sum.month_start | date:'MM/yyyy' }}
-      </ion-card-subtitle>
-    </ion-card-header>
-
+    <div class="card-header-custom">
+      <ion-icon name="calendar-outline" class="calendar-icon"></ion-icon>
+      <span class="month-label">Tháng {{ sum.month_start | date:'MM/yyyy' }}</span>
+    </div>
     <ion-card-content>
-      <div class="stat-row">
-        <div class="txt"><strong>Thu chi:</strong> {{ sum.total_expense | number:'1.0-0' }}</div>
-        <div class="txt"><strong>Thu nhập:</strong> {{ sum.total_income | number:'1.0-0' }}</div>
+      @let pie = getPieData(sum);
+      <div class="chart-wrapper">
+        <svg viewBox="0 0 100 100" class="pie-svg">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#1e1e2e" stroke-width="12" />
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#eb445a" stroke-width="12"
+            [attr.stroke-dasharray]="pie.expDash + ' ' + pie.circumference" stroke-dashoffset="0"
+            transform="rotate(-90 50 50)" />
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#2dd36f" stroke-width="12"
+            [attr.stroke-dasharray]="pie.incDash + ' ' + pie.circumference" [attr.stroke-dashoffset]="pie.incOffset"
+            transform="rotate(-90 50 50)" />
+          <text x="50" y="45" text-anchor="middle" font-size="8" fill="#cccccc">Tổng</text>
+          <text x="50" y="57" text-anchor="middle" font-size="6.5" fill="#ffffff" font-weight="bold">{{
+            (sum.total_expense + sum.total_income) | number:'1.0-0' }}</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-left">
+            <span class="dot expense"></span>
+            <span class="legend-label">Thu chi</span>
+          </div>
+          <div class="legend-right">
+            <span class="legend-pct expense-pct">{{ pie.expPct }}%</span>
+            <span class="legend-amount">{{ sum.total_expense | number:'1.0-0' }} đ</span>
+          </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-item">
+          <div class="legend-left">
+            <span class="dot income"></span>
+            <span class="legend-label">Thu nhập</span>
+          </div>
+          <div class="legend-right">
+            <span class="legend-pct income-pct">{{ pie.incPct }}%</span>
+            <span class="legend-amount">{{ sum.total_income | number:'1.0-0' }} đ</span>
+          </div>
+        </div>
       </div>
     </ion-card-content>
   </ion-card>

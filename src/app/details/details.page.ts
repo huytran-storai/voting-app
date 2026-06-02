@@ -19,6 +19,8 @@ export class DetailsPage implements OnInit {
   wallet: any;
   transactions: any[] = [];
   transactionStats: any[] = [];
+  selectedStatIdx = 0;
+  get selectedStat() { return this.transactionStats[this.selectedStatIdx] ?? null; }
   constructor(private route: ActivatedRoute, private router: Router,
     private walletService: WalletService,
     private alert: AlertController,
@@ -69,7 +71,9 @@ export class DetailsPage implements OnInit {
     if (this.walletId) {
       this.walletService.getTransactionsByWalletId(this.walletId).subscribe({
         next: (data) => {
-          this.transactions = data;
+          this.transactions = data.sort((a: any, b: any) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
         },
         error: (err) => console.error("API Error:", err)
       });

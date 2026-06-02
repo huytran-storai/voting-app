@@ -41,7 +41,7 @@ export class WalletService {
   }
   //transactions table
   getTransactionsByWalletId(walletId: string): Observable<any> {
-    return this.http.get(`${this.apiUrlTransi}?wallet_id=eq.${walletId}`, { headers: this.headers });
+    return this.http.get(`${this.apiUrlTransi}?wallet_id=eq.${walletId}&order=created_at.desc`, { headers: this.headers });
   }
 
   addTransaction(walletId: string, note: string, amount: number, status: number, created_at: string): Observable<any> {
@@ -67,7 +67,7 @@ export class WalletService {
   }
 
   getSum(): Observable<any> {
-    return this.http.get(`${this.apiUrlSumMonth}?select=*`, { headers: this.headers });
+    return this.http.get(`${this.apiUrlSumMonth}?select=*&order=month_start.desc`, { headers: this.headers });
   }
 
   checkpass(): Observable<any> {

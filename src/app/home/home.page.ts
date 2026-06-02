@@ -72,7 +72,9 @@ export class HomePage implements OnInit {
     this.walletS.getSum().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         console.log("dataaaa", data)
-        this.dataSum = data;
+        this.dataSum = data.sort((a: any, b: any) =>
+          new Date(b.month_start).getTime() - new Date(a.month_start).getTime()
+        );
         // this.totals = this.dataWallet.reduce((sum, wallet) => sum + wallet.balance, 0);
       },
       error: (err) => { console.error(err); }
@@ -202,6 +204,19 @@ export class HomePage implements OnInit {
         }
       });
     }
+  }
+
+  getPieData(sum: any) {
+    const r = 40;
+    const circumference = 2 * Math.PI * r;
+    const total = (sum.total_expense || 0) + (sum.total_income || 0);
+    if (total === 0) {
+      return { expDash: 0, incDash: circumference, circumference, incOffset: 0, expPct: 0, incPct: 0 };
+    }
+    const expDash = (sum.total_expense / total) * circumference;
+    const incDash = (sum.total_income / total) * circumference;
+    const expPct = Math.round((sum.total_expense / total) * 100);
+    return { expDash, incDash, circumference, incOffset: -expDash, expPct, incPct: 100 - expPct };
   }
 
   onSearchChange(event: CustomEvent) {
