@@ -75,6 +75,70 @@ ion-toolbar {
     margin: 8px 16px;
     overflow: hidden;
 
+    .filter-bar {
+        padding: 8px 12px 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            &::-webkit-scrollbar { display: none; }
+        }
+
+        .month-row { flex-wrap: nowrap; }
+
+        .pill {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            ion-icon { font-size: 13px; }
+
+            &.active {
+                background: rgba(167,139,250,0.2);
+                border-color: #a78bfa;
+                color: #e2e8f0;
+            }
+
+            &.expense-pill.active {
+                background: rgba(235,68,90,0.2);
+                border-color: #fb7185;
+                color: #fb7185;
+            }
+
+            &.income-pill.active {
+                background: rgba(45,211,111,0.2);
+                border-color: #4ade80;
+                color: #4ade80;
+            }
+        }
+    }
+
+    .empty-filter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 16px;
+        gap: 8px;
+        color: #475569;
+        ion-icon { font-size: 32px; }
+        p { font-size: 13px; margin: 0; }
+    }
+
     .trans-list {
         max-height: 380px;
         overflow-y: auto;

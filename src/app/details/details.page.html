@@ -24,8 +24,32 @@
       <ion-icon name="receipt-outline"></ion-icon>
       <span>Lịch sử giao dịch</span>
     </div>
+    <!-- Filter bar -->
+    <div class="filter-bar" *ngIf="transactions.length > 0">
+      <div class="filter-row">
+        <button class="pill" [class.active]="filterType === 'all'" (click)="filterType = 'all'">Tất cả</button>
+        <button class="pill expense-pill" [class.active]="filterType === 'expense'" (click)="filterType = 'expense'">
+          <ion-icon name="arrow-up-outline"></ion-icon> Thu chi
+        </button>
+        <button class="pill income-pill" [class.active]="filterType === 'income'" (click)="filterType = 'income'">
+          <ion-icon name="arrow-down-outline"></ion-icon> Thu nhập
+        </button>
+      </div>
+      <div class="filter-row month-row">
+        <button class="pill" *ngFor="let m of availableMonths"
+          [class.active]="filterMonth === m"
+          (click)="filterMonth = m">
+          {{ formatMonth(m) }}
+        </button>
+      </div>
+    </div>
+
     <div class="trans-list" *ngIf="transactions.length > 0; else noTransactions">
-      <div class="trans-item" *ngFor="let transaction of transactions"
+      <div class="empty-filter" *ngIf="filteredTransactions.length === 0">
+        <ion-icon name="search-outline"></ion-icon>
+        <p>Không có giao dịch nào</p>
+      </div>
+      <div class="trans-item" *ngFor="let transaction of filteredTransactions"
         [class.expense]="transaction.status == 1"
         [class.income]="transaction.status == 2">
         <div class="trans-icon-wrap">

@@ -20,7 +20,36 @@ export class DetailsPage implements OnInit {
   transactions: any[] = [];
   transactionStats: any[] = [];
   selectedStatIdx = 0;
+  filterType: 'all' | 'expense' | 'income' = 'all';
+  filterMonth = 'all';
+
   get selectedStat() { return this.transactionStats[this.selectedStatIdx] ?? null; }
+
+  get availableMonths(): string[] {
+    const months = this.transactions.map(t => {
+      const d = new Date(t.created_at);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    });
+    return ['all', ...Array.from(new Set(months)).sort((a, b) => b.localeCompare(a))];
+  }
+
+  get filteredTransactions(): any[] {
+    return this.transactions.filter(t => {
+      const typeMatch = this.filterType === 'all'
+        || (this.filterType === 'expense' && t.status === 1)
+        || (this.filterType === 'income' && t.status === 2);
+      const d = new Date(t.created_at);
+      const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      const monthMatch = this.filterMonth === 'all' || this.filterMonth === monthKey;
+      return typeMatch && monthMatch;
+    });
+  }
+
+  formatMonth(key: string): string {
+    if (key === 'all') return 'Tất cả';
+    const [y, m] = key.split('-');
+    return `${m}/${y}`;
+  }
   constructor(private route: ActivatedRoute, private router: Router,
     private walletService: WalletService,
     private alert: AlertController,
