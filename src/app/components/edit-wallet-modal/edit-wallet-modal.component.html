@@ -1,25 +1,54 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="showWallet">📝 {{walletOld.name}}</ion-title>
-    <ion-buttons slot="end" class="back-icon-container">
-      <ion-icon (click)="dismiss()" name="close-circle-outline" color="dark"></ion-icon>
-    </ion-buttons>
+    <div class="modal-header">
+      <div class="modal-title">
+        <ion-icon name="wallet-outline"></ion-icon>
+        <span>Chỉnh sửa ví</span>
+      </div>
+      <ion-icon name="close-circle-outline" class="close-btn" (click)="dismiss()"></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="showWallet">
-  <ion-list>
-    <ion-item>
-      <ion-label position="floating">Tên ví cũ ( {{walletOld.name}} )</ion-label>
-      <ion-input [(ngModel)]="walletData.name" (ionChange)="onInputChangeName()"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Số dư cũ ( {{walletOld.balance}} )</ion-label>
-      <ion-input [(ngModel)]="walletData.balance" (ionChange)="onInputChangeBalance()"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="modal-body">
 
-  <ion-footer>
-    <ion-button expand="full" (click)="updateWallet()">Lưu</ion-button>
-  </ion-footer>
+    <div class="wallet-badge">
+      <ion-icon name="layers-outline"></ion-icon>
+      <span>{{ walletOld.name }}</span>
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Tên ví mới <span class="required">*</span></label>
+      <ion-input
+        class="custom-input"
+        [(ngModel)]="walletData.name"
+        [placeholder]="walletOld.name">
+      </ion-input>
+      <span class="hint">Hiện tại: <strong>{{ walletOld.name }}</strong></span>
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Số dư mới</label>
+      <ion-input
+        class="custom-input"
+        [(ngModel)]="walletData.balance"
+        (ionInput)="onInputChangeBalance()"
+        [placeholder]="walletOld.balance + ' đ'"
+        inputmode="decimal">
+      </ion-input>
+      <span class="hint">Hiện tại: <strong>{{ walletOld.balance | number:'1.0-0' }} đ</strong></span>
+    </div>
+
+    <div class="btn-row">
+      <ion-button fill="outline" color="medium" class="footer-btn" (click)="dismiss()">
+        Hủy
+      </ion-button>
+      <ion-button color="success" class="footer-btn" (click)="updateWallet()">
+        <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+        Lưu
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>

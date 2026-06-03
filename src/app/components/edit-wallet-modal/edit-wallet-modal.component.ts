@@ -1,14 +1,14 @@
-import { Component, Input , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { WalletService } from 'src/app/services/wallet.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 @Component({
   selector: 'app-edit-wallet-modal',
   templateUrl: './edit-wallet-modal.component.html',
   styleUrls: ['./edit-wallet-modal.component.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule],
+  imports: [IonicModule, FormsModule, CommonModule, DecimalPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class EditWalletModalComponent {

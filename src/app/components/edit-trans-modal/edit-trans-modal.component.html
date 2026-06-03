@@ -1,25 +1,61 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>📝 {{dataTransi.note}}</ion-title>
-    <ion-buttons slot="end" class="back-icon-container">
-      <ion-icon (click)="dismiss()" name="close-circle-outline" color="dark"></ion-icon>
-    </ion-buttons>
+    <div class="modal-header">
+      <div class="modal-title">
+        <ion-icon [name]="selectedStatus === 1 ? 'arrow-up-outline' : 'arrow-down-outline'"
+          [class]="selectedStatus === 1 ? 'icon-expense' : 'icon-income'"></ion-icon>
+        <span>Chỉnh sửa giao dịch</span>
+      </div>
+      <ion-icon name="close-circle-outline" class="close-btn" (click)="dismiss()"></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label position="floating">Tên giao dịch cũ( {{dataTransi.note}} )</ion-label>
-      <ion-input [(ngModel)]="transactionsData.note" (ionChange)="onInputChangeNote()"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Số dư cũ ( {{dataTransi.amount}} )</ion-label>
-      <ion-input [(ngModel)]="transactionsData.amount" (ionChange)="onInputChangeAmount()"></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="modal-body">
 
-  <ion-footer>
-    <ion-button expand="full" (click)="updateWallet()">Lưu</ion-button>
-  </ion-footer>
+    <div class="type-toggle">
+      <button class="type-btn expense-btn" [class.active]="selectedStatus === 1" (click)="selectedStatus = 1">
+        <ion-icon name="arrow-up-outline"></ion-icon>
+        Thu chi
+      </button>
+      <button class="type-btn income-btn" [class.active]="selectedStatus === 2" (click)="selectedStatus = 2">
+        <ion-icon name="arrow-down-outline"></ion-icon>
+        Thu nhập
+      </button>
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Nội dung mới <span class="required">*</span></label>
+      <ion-input
+        class="custom-input"
+        [(ngModel)]="transactionsData.note"
+        [placeholder]="dataTransi?.note">
+      </ion-input>
+      <span class="hint">Hiện tại: <strong>{{ dataTransi?.note }}</strong></span>
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Số tiền mới</label>
+      <ion-input
+        class="custom-input"
+        [(ngModel)]="transactionsData.amount"
+        (ionInput)="onInputChangeAmount()"
+        [placeholder]="dataTransi?.amount + ' đ'"
+        inputmode="decimal">
+      </ion-input>
+      <span class="hint">Hiện tại: <strong>{{ dataTransi?.amount | number:'1.0-0' }}đ</strong></span>
+    </div>
+
+    <div class="btn-row">
+      <ion-button fill="outline" color="medium" class="footer-btn" (click)="dismiss()">
+        Hủy
+      </ion-button>
+      <ion-button [color]="selectedStatus === 1 ? 'danger' : 'success'" class="footer-btn" (click)="updateWallet()">
+        <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+        Lưu
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>
